@@ -1,49 +1,14 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-function FinancialSnapshotForm() {
-  const [files, setFiles] = useState({
-    itReturns: null,
-    auditedBalanceSheet: null,
-    bankStatement: null,
-    gstReturns: null,
-    esiProof: null,
-    pfProof: null,
-  });
-
-  const handleFileChange = (event, fieldName) => {
-    setFiles({
-      ...files,
-      [fieldName]: event.target.files[0], // Only take the first file if multiple are selected
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Submitted Files:', files);
-    // Here you would typically send the files to a server, e.g., using FormData and fetch or Axios
-    // Example of how to prepare for sending:
-    // const formData = new FormData();
-    // for (const key in files) {
-    //   if (files[key]) {
-    //     formData.append(key, files[key]);
-    //   }
-    // }
-    // console.log(formData); // You can't directly inspect formData contents, but it's ready to be sent
-    // Example fetch call:
-    // fetch('/api/upload', {
-    //   method: 'POST',
-    //   body: formData,
-    // })
-    // .then(response => response.json())
-    // .then(data => console.log('Upload success:', data))
-    // .catch(error => console.error('Upload error:', error));
-  };
+function FinancialSnapshotForm({ files, onFilesChange }) {
+ const handleFileChange = (event, fieldName) => {
+    onFilesChange(fieldName, Array.from(event.target.files))
+  }
 
   return (
     <Container className="my-5 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }}>
-      <h2 className="mb-4" style={{color: '#167C80'}}>Financial Snapshot </h2>
-      <Form onSubmit={handleSubmit}>
+      <h2 className="mb-4" style={{ color: '#167C80' }}>Financial Snapshot </h2>
         {/* IT Returns */}
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
@@ -51,11 +16,16 @@ function FinancialSnapshotForm() {
               <Form.Label>IT Returns:</Form.Label>
               <Form.Control
                 type="file"
+                multiple
+                accept=".jpg,.pdf,.png"
                 onChange={(e) => handleFileChange(e, 'itReturns')}
               />
-              {files.itReturns && (
+              <Form.Text muted>
+                Each file should not exceed 5 MB.
+              </Form.Text>
+              {files.itReturns && files.itReturns.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.itReturns.name}
+                  Selected files: {files.itReturns.map((file) => file.name).join(', ')}
                 </Form.Text>
               )}
             </Form.Group>
@@ -69,11 +39,16 @@ function FinancialSnapshotForm() {
               <Form.Label>Audited Balance Sheet:</Form.Label>
               <Form.Control
                 type="file"
+                multiple
+                accept=".jpg,.pdf,.png"
                 onChange={(e) => handleFileChange(e, 'auditedBalanceSheet')}
               />
-              {files.auditedBalanceSheet && (
+              <Form.Text muted>
+                Each file should not exceed 5 MB.
+              </Form.Text>
+              {files.auditedBalanceSheet && files.auditedBalanceSheet.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.auditedBalanceSheet.name}
+                  Selected file: {files.auditedBalanceSheet.map((file) => file.name).join(', ')}
                 </Form.Text>
               )}
             </Form.Group>
@@ -87,11 +62,16 @@ function FinancialSnapshotForm() {
               <Form.Label>Bank Statement:</Form.Label>
               <Form.Control
                 type="file"
+                multiple
+                accept=".jpg,.pdf,.png"
                 onChange={(e) => handleFileChange(e, 'bankStatement')}
               />
-              {files.bankStatement && (
+              <Form.Text muted>
+                Each file should not exceed 10 MB.
+              </Form.Text>
+              {files.bankStatement && files.bankStatement.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.bankStatement.name}
+                  Selected file: {files.bankStatement.map((file) => file.name).join(', ')}
                 </Form.Text>
               )}
             </Form.Group>
@@ -105,11 +85,16 @@ function FinancialSnapshotForm() {
               <Form.Label>GST Returns:</Form.Label>
               <Form.Control
                 type="file"
+                multiple
+                accept=".jpg,.pdf,.png"
                 onChange={(e) => handleFileChange(e, 'gstReturns')}
               />
-              {files.gstReturns && (
+              <Form.Text muted>
+                Each file should not exceed 5 MB.
+              </Form.Text>
+              {files.gstReturns && files.gstReturns.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.gstReturns.name}
+                  Selected file: {files.gstReturns.map((file) => file.name).join(', ')}
                 </Form.Text>
               )}
             </Form.Group>
@@ -123,11 +108,16 @@ function FinancialSnapshotForm() {
               <Form.Label>ESI Proof:</Form.Label>
               <Form.Control
                 type="file"
+                multiple
+                accept=".jpg,.pdf,.png"
                 onChange={(e) => handleFileChange(e, 'esiProof')}
               />
-              {files.esiProof && (
+              <Form.Text muted>
+                Each file should not exceed 5 MB.
+              </Form.Text>
+              {files.esiProof && files.esiProof.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.esiProof.name}
+                  Selected file: {files.esiProof.map((file) => file.name).join(', ')}
                 </Form.Text>
               )}
             </Form.Group>
@@ -141,11 +131,16 @@ function FinancialSnapshotForm() {
               <Form.Label>PF Proof:</Form.Label>
               <Form.Control
                 type="file"
+                multiple
+                accept=".jpg,.pdf,.png"
                 onChange={(e) => handleFileChange(e, 'pfProof')}
               />
-              {files.pfProof && (
+              <Form.Text muted>
+                Each file should not exceed 5 MB.
+              </Form.Text>
+              {files.pfProof && files.pfProof.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.pfProof.name}
+                  Selected file: {files.esiProof.map((file) => file.name).join(', ')}
                 </Form.Text>
               )}
             </Form.Group>
@@ -155,7 +150,7 @@ function FinancialSnapshotForm() {
         {/* <Button variant="primary" type="submit">
           Upload Documents
         </Button> */}
-      </Form>
+      
     </Container>
   );
 }
