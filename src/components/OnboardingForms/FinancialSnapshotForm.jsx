@@ -41,11 +41,12 @@ function FinancialSnapshotForm() {
   };
 
   return (
-    <Container className="my-5">
-      <h2 className="mb-4">Financial Snapshot </h2>
+    <Container className="my-5 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }}>
+      <h2 className="mb-4" style={{color: '#167C80'}}>Financial Snapshot </h2>
       <Form onSubmit={handleSubmit}>
+        {/* IT Returns */}
         <Row className="mb-3">
-          <Col md={6}>
+          <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formITReturns">
               <Form.Label>IT Returns:</Form.Label>
               <Form.Control
@@ -59,7 +60,11 @@ function FinancialSnapshotForm() {
               )}
             </Form.Group>
           </Col>
-          <Col md={6}>
+        </Row>
+
+        {/* Audited Balance Sheet */}
+        <Row className="mb-3">
+          <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formAuditedBalanceSheet">
               <Form.Label>Audited Balance Sheet:</Form.Label>
               <Form.Control
@@ -75,8 +80,9 @@ function FinancialSnapshotForm() {
           </Col>
         </Row>
 
+        {/* Bank Statement */}
         <Row className="mb-3">
-          <Col md={6}>
+          <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formBankStatement">
               <Form.Label>Bank Statement:</Form.Label>
               <Form.Control
@@ -90,7 +96,11 @@ function FinancialSnapshotForm() {
               )}
             </Form.Group>
           </Col>
-          <Col md={6}>
+        </Row>
+
+        {/* GST Returns */}
+        <Row className="mb-3">
+          <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formGSTReturns">
               <Form.Label>GST Returns:</Form.Label>
               <Form.Control
@@ -106,8 +116,9 @@ function FinancialSnapshotForm() {
           </Col>
         </Row>
 
+        {/* ESI Proof */}
         <Row className="mb-3">
-          <Col md={6}>
+          <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formESIProof">
               <Form.Label>ESI Proof:</Form.Label>
               <Form.Control
@@ -121,7 +132,11 @@ function FinancialSnapshotForm() {
               )}
             </Form.Group>
           </Col>
-          <Col md={6}>
+        </Row>
+
+        {/* PF Proof */}
+        <Row className="mb-3">
+          <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formPFProof">
               <Form.Label>PF Proof:</Form.Label>
               <Form.Control
@@ -137,9 +152,9 @@ function FinancialSnapshotForm() {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit">
+        {/* <Button variant="primary" type="submit">
           Upload Documents
-        </Button>
+        </Button> */}
       </Form>
     </Container>
   );
