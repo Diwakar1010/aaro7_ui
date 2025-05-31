@@ -2,8 +2,36 @@ import React, { useState } from 'react'
 import FinancialSnapshotForm from './FinancialSnapshotForm'
 import ClientDetailsForm from './ClientDetailsForm'
 import { Button, Form } from 'react-bootstrap'
+import BusinessDashboard from './BusinessDashboard.jsx'
+import KycRegistration from './KycRegistration.jsx'
 
 const OnboardingForms = () => {
+  const [businessData, setBusinessData] = useState({
+    businessName: '',
+    entity: '',
+    industry: 'Man-power Staffing',
+    businessAge: '',
+    registeredOffice: '',
+    headOffice: '',
+    certificateOfIncorporation: null,
+    moa: null,
+  })
+
+  const [kycData, setKycData] = useState({
+    psaraLicense: null,
+    panCopy: null,
+    gstCertificate: null,
+    udyamCertificate: null,
+  });
+
+  const handleKycDataChange = (name, value) => {
+    setKycData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
   const [financialFiles, setFinancialFiles] = useState({
     itReturns: [],
     auditedBalanceSheet: [],
@@ -24,6 +52,13 @@ const OnboardingForms = () => {
     workOrderUpload: null,
     payrollListUpload: null,
   })
+
+  const handleBusinessChange = (name, value) => {
+    setBusinessData(prev => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   const handleFinancialFilesChange = (fieldName, files) => {
     setFinancialFiles(prev => ({
@@ -52,7 +87,6 @@ const OnboardingForms = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     const financialFilesBase64 = {}
     for (const key in financialFiles) {
       financialFilesBase64[key] = []
@@ -71,7 +105,22 @@ const OnboardingForms = () => {
       }
     }
 
+    const businessFilesBase64 = {}
+    for (const key of ['certificateOfIncorporation', 'moa']) {
+      const file = businessData[key]
+      if (file) {
+        const base64 = await toBase64(file)
+        businessFilesBase64[key] = base64
+      }
+    }
+
     const payload = {
+      businessData: {
+        ...businessData,
+        ...businessFilesBase64,
+         certificateOfIncorporation: undefined,
+         moa: undefined,
+      },
       financialFiles: financialFilesBase64,
       clientData: {
         ...clientData,
@@ -80,11 +129,13 @@ const OnboardingForms = () => {
     }
 
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzoMfvQaPjseNZFidbWo0yPONihqzCDY-hdApIWLbBLTHjfcmnihuPnPsIIDnnkJE2i5A/exec', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      })
-
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycbzoMfvQaPjseNZFidbWo0yPONihqzCDY-hdApIWLbBLTHjfcmnihuPnPsIIDnnkJE2i5A/exec',
+        {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        }
+      )
       const result = await response.text()
       console.log(result)
     } catch (error) {
@@ -94,10 +145,13 @@ const OnboardingForms = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange}/>
+      <KycRegistration formData={kycData} onFormDataChange={handleKycDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
       <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
-      <div className='mt-2 mb-5 text-center'>
-        <Button style={{ backgroundColor: '#167C80' }} type='submit'>
+
+      <div className="mt-2 mb-5 text-center">
+        <Button style={{ backgroundColor: '#167C80' }} type="submit">
           Submit Application
         </Button>
       </div>
