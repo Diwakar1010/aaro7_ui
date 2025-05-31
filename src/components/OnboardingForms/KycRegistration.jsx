@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 
-const KycRegistration = () => {
-  const [psaraLicense, setPsaraLicense] = useState(null);
-  const [panCopy, setPanCopy] = useState(null);
-  const [gstCertificate, setGstCertificate] = useState(null);
-  const [udyamCertificate, setUdyamCertificate] = useState(null);
-
+const KycRegistration = ({ formData, onFormDataChange }) => {
   const [errors, setErrors] = useState({
     psaraLicense: '',
     panCopy: '',
@@ -16,28 +11,25 @@ const KycRegistration = () => {
 
   const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
 
-  const handleFileChange = (e, setFile, field) => {
-    const file = e.target.files[0];
-    if (file && !allowedTypes.includes(file.type)) {
-      setErrors((prev) => ({
+  const handleFileChange = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!allowedTypes.includes(file.type)) {
+      setErrors(prev => ({
         ...prev,
-        [field]: 'Invalid file type. Please upload a PDF, JPG, or PNG file.',
+        [fieldName]: 'Invalid file type. Please upload PDF, JPG, or PNG files.'
       }));
-      e.target.value = '';
-      setFile(null);
+      onFormDataChange(fieldName, null);
+      event.target.value = '';
       return;
     }
 
-    setFile(file);
-    setErrors((prev) => ({
+    onFormDataChange(fieldName, file);
+    setErrors(prev => ({
       ...prev,
-      [field]: '',
+      [fieldName]: ''
     }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ psaraLicense, panCopy, gstCertificate, udyamCertificate });
   };
 
   return (
@@ -51,54 +43,30 @@ const KycRegistration = () => {
         </p>
       </div>
 
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 text-start" controlId="psaraLicense">
-          <Form.Label>PSARA License: (PDF/JPG/PNG)</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf, .jpg, .jpeg, .png"
-            onChange={(e) => handleFileChange(e, setPsaraLicense, 'psaraLicense')}
-          />
-          {errors.psaraLicense && (
-            <div className="text-danger mt-1">{errors.psaraLicense}</div>
-          )}
-        </Form.Group>
-
-        <Form.Group className="mb-3 text-start" controlId="panCopy">
-          <Form.Label>PAN Copy: (PDF/JPG/PNG)</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf, .jpg, .jpeg, .png"
-            onChange={(e) => handleFileChange(e, setPanCopy, 'panCopy')}
-          />
-          {errors.panCopy && (
-            <div className="text-danger mt-1">{errors.panCopy}</div>
-          )}
-        </Form.Group>
-
-        <Form.Group className="mb-3 text-start" controlId="gstCertificate">
-          <Form.Label>GST Certificate: (PDF/JPG/PNG)</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf, .jpg, .jpeg, .png"
-            onChange={(e) => handleFileChange(e, setGstCertificate, 'gstCertificate')}
-          />
-          {errors.gstCertificate && (
-            <div className="text-danger mt-1">{errors.gstCertificate}</div>
-          )}
-        </Form.Group>
-
-        <Form.Group className="mb-4 text-start" controlId="udyamCertificate">
-          <Form.Label>Udyam Certificate: (PDF/JPG/PNG)</Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf, .jpg, .jpeg, .png"
-            onChange={(e) => handleFileChange(e, setUdyamCertificate, 'udyamCertificate')}
-          />
-          {errors.udyamCertificate && (
-            <div className="text-danger mt-1">{errors.udyamCertificate}</div>
-          )}
-        </Form.Group>
+      <Form>
+        {[
+          { label: 'PSARA License', field: 'psaraLicense' },
+          { label: 'PAN Copy', field: 'panCopy' },
+          { label: 'GST Certificate', field: 'gstCertificate' },
+          { label: 'Udyam Certificate', field: 'udyamCertificate' }
+        ].map(({ label, field }) => (
+          <Form.Group key={field} className="mb-3 text-start" controlId={field}>
+            <Form.Label>{label}: <small className="text-muted">(PDF/JPG/PNG)</small></Form.Label>
+            <Form.Control
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png"
+              onChange={(e) => handleFileChange(e, field)}
+            />
+            {formData[field] && (
+              <Form.Text muted>
+                <br />Selected file: {formData[field].name}
+              </Form.Text>
+            )}
+            {errors[field] && (
+              <div className="text-danger mt-1">{errors[field]}</div>
+            )}
+          </Form.Group>
+        ))}
       </Form>
     </Container>
   );
