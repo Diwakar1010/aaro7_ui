@@ -4,6 +4,8 @@ import ClientDetailsForm from './ClientDetailsForm';
 import { Button, Form } from 'react-bootstrap';
 import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
+import { Container } from 'react-bootstrap';
+
 
 const OnboardingForms = () => {
   const [businessData, setBusinessData] = useState({
@@ -127,8 +129,7 @@ const OnboardingForms = () => {
       businessData: {
         ...businessData,
         ...businessFilesBase64,
-        certificateOfIncorporation: undefined,
-        moa: undefined,
+
       },
       kycData: kycFilesBase64,
       financialFiles: financialFilesBase64,
@@ -156,6 +157,11 @@ const OnboardingForms = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Container className="my-4">
+        <h1 className="text-center" style={{ color: '#167C80' }}>
+          Aaro7 - Onboarding Form
+        </h1>
+      </Container>
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />

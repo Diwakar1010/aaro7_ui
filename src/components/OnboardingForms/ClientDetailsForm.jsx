@@ -29,8 +29,16 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
             {addClient.map((item, index) => {
                 return (
                     <Container className="my-2 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }} key={index}>
-                        <h2 className="mb-4" style={{ color: '#167C80' }}>Client {index + 1}</h2>
-                        
+
+                        <div className="d-flex align-items-center justify-content-start mb-4">
+                          <h2 className="mb-0 me-2" style={{ color: '#167C80' }}>
+                            Client {index + 1}
+                          </h2>
+                          <h4 className="mb-0 fw-semibold text-muted" style={{ fontSize: '1.1rem' }}>
+                            (Client Projects for Invoice Discounting)
+                          </h4>
+                        </div>
+
                             {/* Client Name */}
                             <Row className="mb-3">
                                 <Col md={12}>
@@ -60,7 +68,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                                         >
                                             <option value="">Select</option>
                                             <option value="centralgovernment">Central Government</option>
-                                            <option value="telanganastategovernment">Telangana State Government</option>
+                                            <option value="telanganastategovernment">State Government</option>
                                             <option value="privatecompany">(AAA) Private Company</option>
                                             <option value="other">Other</option>
                                         </Form.Control>
@@ -88,7 +96,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                             <Row className="mb-3">
                                 <Col md={12}>
                                     <Form.Group controlId="formPaymentCycle">
-                                        <Form.Label>Payment Cycle:</Form.Label>
+                                        <Form.Label>Payment Cycle: (Days)</Form.Label>
                                         <Form.Control
                                             as="select" // Use 'as="select"' for dropdowns
                                             name="paymentCycle"
@@ -110,7 +118,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                             <Row className="mb-3">
                                 <Col md={12}>
                                     <Form.Group controlId="formStartDate">
-                                        <Form.Label>Start Date:</Form.Label>
+                                        <Form.Label>Project Start Date:</Form.Label>
                                         <Form.Control
                                             type="date" // Use 'date' for date input
                                             name="startDate"
@@ -126,7 +134,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                             <Row className="mb-3">
                                 <Col md={12}>
                                     <Form.Group controlId="formEndDate">
-                                        <Form.Label>End Date:</Form.Label>
+                                        <Form.Label>Work order valid till:</Form.Label>
                                         <Form.Control
                                             type="date" // Use 'date' for date input
                                             name="endDate"
@@ -142,7 +150,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                             <Row className="mb-3">
                                 <Col md={12}>
                                     <Form.Group controlId="formInvoiceUpload">
-                                        <Form.Label>Invoice Upload:</Form.Label>
+                                        <Form.Label>Upload a recent Invoice:</Form.Label>
                                         <Form.Control
                                             type="file"
                                             name="invoiceUpload"
@@ -153,7 +161,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                                         </Form.Text>
                                         {formData.invoiceUpload && (
                                             <Form.Text muted>
-                                                Selected file: {formData.invoiceUpload.name}
+                                               {formData.invoiceUpload.name} Uploaded file
                                             </Form.Text>
                                         )}
                                     </Form.Group>
@@ -164,7 +172,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                             <Row className="mb-3">
                                 <Col md={12}>
                                     <Form.Group controlId="formWorkOrderUpload">
-                                        <Form.Label>Work Order Upload:</Form.Label>
+                                        <Form.Label>Work Order Upload (.xlx, xlsx):</Form.Label>
                                         <Form.Control
                                             type="file"
                                             name="workOrderUpload"
@@ -175,7 +183,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                                         </Form.Text>
                                         {formData.workOrderUpload && (
                                             <Form.Text muted>
-                                                Selected file: {formData.workOrderUpload.name}
+                                                {formData.workOrderUpload.name} Uploaded file
                                             </Form.Text>
                                         )}
                                     </Form.Group>
@@ -202,7 +210,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
 
                                         {formData.payrollListUpload && (
                                             <Form.Text muted>
-                                                Selected file: {formData.payrollListUpload.name}
+                                                {formData.payrollListUpload.name} Uploaded file
                                             </Form.Text>
                                         )}
                                     </Form.Group>

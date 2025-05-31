@@ -13,7 +13,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formITReturns">
-              <Form.Label>IT Returns:</Form.Label>
+              <Form.Label>IT Returns: (PDF/JPG/PNG)</Form.Label>
               <Form.Control
                 type="file"
                 multiple
@@ -25,7 +25,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               </Form.Text>
               {files.itReturns && files.itReturns.length > 0 && (
                 <Form.Text muted>
-                  Selected files: {files.itReturns.map((file) => file.name).join(', ')}
+                  {files.itReturns.map((file) => file.name).join(', ')} Uploaded file
                 </Form.Text>
               )}
             </Form.Group>
@@ -36,7 +36,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formAuditedBalanceSheet">
-              <Form.Label>Audited Balance Sheet:</Form.Label>
+              <Form.Label>Audited Balance Sheet: (PDF/JPG/PNG)</Form.Label>
               <Form.Control
                 type="file"
                 multiple
@@ -48,7 +48,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               </Form.Text>
               {files.auditedBalanceSheet && files.auditedBalanceSheet.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.auditedBalanceSheet.map((file) => file.name).join(', ')}
+                  {files.auditedBalanceSheet.map((file) => file.name).join(', ')} Uploaded file
                 </Form.Text>
               )}
             </Form.Group>
@@ -59,7 +59,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formBankStatement">
-              <Form.Label>Bank Statement:</Form.Label>
+              <Form.Label>Bank Statement: (PDF/JPG/PNG)</Form.Label>
               <Form.Control
                 type="file"
                 multiple
@@ -71,7 +71,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               </Form.Text>
               {files.bankStatement && files.bankStatement.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.bankStatement.map((file) => file.name).join(', ')}
+                  {files.bankStatement.map((file) => file.name).join(', ')} Uploaded file
                 </Form.Text>
               )}
             </Form.Group>
@@ -82,7 +82,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formGSTReturns">
-              <Form.Label>GST Returns:</Form.Label>
+              <Form.Label>GST Returns: (PDF/JPG/PNG)</Form.Label>
               <Form.Control
                 type="file"
                 multiple
@@ -94,7 +94,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               </Form.Text>
               {files.gstReturns && files.gstReturns.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.gstReturns.map((file) => file.name).join(', ')}
+                  {files.gstReturns.map((file) => file.name).join(', ')} Uploaded file
                 </Form.Text>
               )}
             </Form.Group>
@@ -105,7 +105,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formESIProof">
-              <Form.Label>ESI Proof:</Form.Label>
+              <Form.Label>ESI Proof: (PDF/JPG/PNG)</Form.Label>
               <Form.Control
                 type="file"
                 multiple
@@ -117,7 +117,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               </Form.Text>
               {files.esiProof && files.esiProof.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.esiProof.map((file) => file.name).join(', ')}
+                  {files.esiProof.map((file) => file.name).join(', ')} Uploaded file
                 </Form.Text>
               )}
             </Form.Group>
@@ -128,7 +128,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
         <Row className="mb-3">
           <Col md={12}> {/* Changed to md={12} to take full width */}
             <Form.Group controlId="formPFProof">
-              <Form.Label>PF Proof:</Form.Label>
+              <Form.Label>PF Proof: (PDF/JPG/PNG)</Form.Label>
               <Form.Control
                 type="file"
                 multiple
@@ -140,7 +140,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               </Form.Text>
               {files.pfProof && files.pfProof.length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.esiProof.map((file) => file.name).join(', ')}
+                  {files.esiProof.map((file) => file.name).join(', ')} Uploaded file
                 </Form.Text>
               )}
             </Form.Group>

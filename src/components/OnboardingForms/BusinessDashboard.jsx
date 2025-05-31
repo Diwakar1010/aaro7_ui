@@ -34,7 +34,6 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
     <Container className="my-5 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }}>
       <div className="mb-4">
         <h4 className="fw-semibold text-start" style={{ color: '#167C80' }}>Business Details</h4>
-        <p className="text-muted text-start mb-0">Fill in your business information to proceed</p>
       </div>
 
       <Form>

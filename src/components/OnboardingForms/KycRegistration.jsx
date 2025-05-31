@@ -38,9 +38,6 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
         <h4 className="fw-semibold text-start" style={{ color: '#167C80' }}>
           KYC & Registration
         </h4>
-        <p className="text-muted text-start mb-0">
-          Upload your registration documents to continue
-        </p>
       </div>
 
       <Form>
@@ -59,7 +56,7 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
             />
             {formData[field] && (
               <Form.Text muted>
-                <br />Selected file: {formData[field].name}
+                <br />{formData[field].name} Uploaded file
               </Form.Text>
             )}
             {errors[field] && (
