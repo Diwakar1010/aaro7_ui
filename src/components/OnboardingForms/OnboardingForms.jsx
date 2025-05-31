@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import FinancialSnapshotForm from './FinancialSnapshotForm'
-import ClientDetailsForm from './ClientDetailsForm'
-import { Button, Form } from 'react-bootstrap'
-import BusinessDashboard from './BusinessDashboard.jsx'
-import KycRegistration from './KycRegistration.jsx'
+import React, { useState } from 'react';
+import FinancialSnapshotForm from './FinancialSnapshotForm';
+import ClientDetailsForm from './ClientDetailsForm';
+import { Button, Form } from 'react-bootstrap';
+import BusinessDashboard from './BusinessDashboard.jsx';
+import KycRegistration from './KycRegistration.jsx';
 
 const OnboardingForms = () => {
   const [businessData, setBusinessData] = useState({
@@ -15,7 +15,7 @@ const OnboardingForms = () => {
     headOffice: '',
     certificateOfIncorporation: null,
     moa: null,
-  })
+  });
 
   const [kycData, setKycData] = useState({
     psaraLicense: null,
@@ -24,14 +24,6 @@ const OnboardingForms = () => {
     udyamCertificate: null,
   });
 
-  const handleKycDataChange = (name, value) => {
-    setKycData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-
   const [financialFiles, setFinancialFiles] = useState({
     itReturns: [],
     auditedBalanceSheet: [],
@@ -39,7 +31,7 @@ const OnboardingForms = () => {
     gstReturns: [],
     esiProof: [],
     pfProof: [],
-  })
+  });
 
   const [clientData, setClientData] = useState({
     clientName: '',
@@ -51,66 +43,83 @@ const OnboardingForms = () => {
     invoiceUpload: null,
     workOrderUpload: null,
     payrollListUpload: null,
-  })
+  });
+
+  const handleFormDataChange = (field, value) => {
+    setKycData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleBusinessChange = (name, value) => {
     setBusinessData(prev => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleFinancialFilesChange = (fieldName, files) => {
     setFinancialFiles(prev => ({
       ...prev,
       [fieldName]: files,
-    }))
-  }
+    }));
+  };
 
   const handleClientDataChange = (name, value) => {
     setClientData(prev => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
       reader.onload = () => {
-        const base64 = reader.result.split(',')[1]
-        resolve({ name: file.name, type: file.type, data: base64 })
-      }
-      reader.onerror = error => reject(error)
-    })
+        const base64 = reader.result.split(',')[1];
+        resolve({ name: file.name, type: file.type, data: base64 });
+      };
+      reader.onerror = error => reject(error);
+    });
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const financialFilesBase64 = {}
+    e.preventDefault();
+
+    const financialFilesBase64 = {};
     for (const key in financialFiles) {
-      financialFilesBase64[key] = []
+      financialFilesBase64[key] = [];
       for (const file of financialFiles[key]) {
-        const base64 = await toBase64(file)
-        financialFilesBase64[key].push(base64)
+        const base64 = await toBase64(file);
+        financialFilesBase64[key].push(base64);
       }
     }
 
-    const clientFilesBase64 = {}
+    const clientFilesBase64 = {};
     for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
-      const file = clientData[key]
+      const file = clientData[key];
       if (file) {
-        const base64 = await toBase64(file)
-        clientFilesBase64[key] = base64
+        const base64 = await toBase64(file);
+        clientFilesBase64[key] = base64;
       }
     }
 
-    const businessFilesBase64 = {}
+    const businessFilesBase64 = {};
     for (const key of ['certificateOfIncorporation', 'moa']) {
-      const file = businessData[key]
+      const file = businessData[key];
       if (file) {
-        const base64 = await toBase64(file)
-        businessFilesBase64[key] = base64
+        const base64 = await toBase64(file);
+        businessFilesBase64[key] = base64;
+      }
+    }
+
+    const kycFilesBase64 = {};
+    for (const key in kycData) {
+      const file = kycData[key];
+      if (file) {
+        const base64 = await toBase64(file);
+        kycFilesBase64[key] = base64;
       }
     }
 
@@ -118,15 +127,16 @@ const OnboardingForms = () => {
       businessData: {
         ...businessData,
         ...businessFilesBase64,
-         certificateOfIncorporation: undefined,
-         moa: undefined,
+        certificateOfIncorporation: undefined,
+        moa: undefined,
       },
+      kycData: kycFilesBase64,
       financialFiles: financialFilesBase64,
       clientData: {
         ...clientData,
         ...clientFilesBase64,
       },
-    }
+    };
 
     try {
       const response = await fetch(
@@ -135,18 +145,19 @@ const OnboardingForms = () => {
           method: 'POST',
           body: JSON.stringify(payload),
         }
-      )
-      const result = await response.text()
-      console.log(result)
+      );
+      const result = await response.text();
+      console.log(result);
     } catch (error) {
-      console.error('Submission error:', error)
+      console.error('Submission error:', error);
     }
-  }
+
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange}/>
-      <KycRegistration formData={kycData} onFormDataChange={handleKycDataChange} />
+      <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
+      <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
       <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
 
@@ -156,7 +167,7 @@ const OnboardingForms = () => {
         </Button>
       </div>
     </Form>
-  )
-}
+  );
+};
 
-export default OnboardingForms
+export default OnboardingForms;
