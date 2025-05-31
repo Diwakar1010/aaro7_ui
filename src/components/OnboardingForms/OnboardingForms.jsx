@@ -140,10 +140,12 @@ const OnboardingForms = () => {
     };
 
     try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbzoMfvQaPjseNZFidbWo0yPONihqzCDY-hdApIWLbBLTHjfcmnihuPnPsIIDnnkJE2i5A/exec',
+      const response = await fetch(' http://13.203.196.168:3001/submit',
         {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(payload),
         }
       );
