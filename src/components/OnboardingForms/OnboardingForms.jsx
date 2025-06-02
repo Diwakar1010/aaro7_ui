@@ -119,14 +119,15 @@ const OnboardingForms = () => {
 
     try {
       // Convert financial files to base64
-      const financialFilesBase64 = {};
-      for (const key in financialFiles) {
-        financialFilesBase64[key] = [];
-        for (const file of financialFiles[key]) {
-          const base64 = await toBase64(file);
-          financialFilesBase64[key].push(base64);
+      const financialFilesBase64 = {}
+        for (const key in financialFiles) {
+            financialFilesBase64[key] = [];
+            for (const file of financialFiles[key]) {
+                const base64 = await toBase64(file);
+                financialFilesBase64[key].push(base64);
+            }
         }
-      }
+
 
       // Convert client files to base64
       const clientFilesBase64 = [];
@@ -141,6 +142,7 @@ const OnboardingForms = () => {
         }
         clientFilesBase64.push(files);
       }
+
 
       // Convert business files to base64
       const businessFilesBase64 = {};
@@ -175,12 +177,13 @@ const OnboardingForms = () => {
         })),
       };
 
-      const response = await fetch('http://13.203.196.168:3001/submit', {
+      const response = await fetch('http://localhost:3001/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(payload),
       });
-
       if (response.ok) {
         setSuccessMessage('Application submitted successfully!');
       } else {
@@ -191,18 +194,14 @@ const OnboardingForms = () => {
       console.error('Submission error:', error);
       setErrorMessage('An error occurred during submission. Please try again.');
     }
-  }
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-      <ClientDetailsForm
-        clientData={clientData}
-        onClientDataChange={handleClientDataChange}
-        onAddClient={handleAddClient}
-      />
+      <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
