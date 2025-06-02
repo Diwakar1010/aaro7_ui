@@ -8,7 +8,8 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
     bankStatement: '',
     gstReturns: '',
     esiProof: '',
-    pfProof: ''
+    pfProof: '',
+    existingLoanLetters: '',
   });
 
   const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
@@ -23,7 +24,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
     if (invalidFiles.length > 0) {
       setErrors(prev => ({
         ...prev,
-        [fieldName]: `Only PDF, JPG, PNG files under ${maxSizeMB}MB are allowed.`
+        [fieldName]: `Only PDF, JPG, PNG files under ${maxSizeMB}MB are allowed.`,
       }));
       onFilesChange(fieldName, []);
       event.target.value = '';
@@ -35,12 +36,13 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
   };
 
   const fields = [
-    { label: 'IT Returns', field: 'itReturns', maxSizeMB: 5 },
-    { label: 'Audited Balance Sheet', field: 'auditedBalanceSheet', maxSizeMB: 5 },
-    { label: 'Bank Statement', field: 'bankStatement', maxSizeMB: 10 },
-    { label: 'GST Returns', field: 'gstReturns', maxSizeMB: 5 },
-    { label: 'ESI Proof', field: 'esiProof', maxSizeMB: 5 },
-    { label: 'PF Proof', field: 'pfProof', maxSizeMB: 5 },
+    { label: 'IT Returns (Last 1 Year)', field: 'itReturns', maxSizeMB: 5 },
+    { label: 'Audited Balance Sheet (Last 1 Year)', field: 'auditedBalanceSheet', maxSizeMB: 5 },
+    { label: 'Bank Statement (Last 1 Year)', field: 'bankStatement', maxSizeMB: 10 },
+    { label: 'GST Returns (Last 3 Months)', field: 'gstReturns', maxSizeMB: 5 },
+    { label: 'ESI Proof (Last 6 Months)', field: 'esiProof', maxSizeMB: 5 },
+    { label: 'PF Proof (Last 6 Months)', field: 'pfProof', maxSizeMB: 5 },
+    { label: 'Existing Loan Sanction Letters', field: 'existingLoanLetters', maxSizeMB: 5 },
   ];
 
   return (

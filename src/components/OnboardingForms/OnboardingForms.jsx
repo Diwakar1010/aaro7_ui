@@ -31,6 +31,7 @@ const OnboardingForms = () => {
     gstReturns: [],
     esiProof: [],
     pfProof: [],
+    existingLoanLetters: [],
   });
 
   const [clientData, setClientData] = useState([
@@ -46,11 +47,7 @@ const OnboardingForms = () => {
       payrollListUpload: null,
     }
   ]);
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -122,20 +119,15 @@ const OnboardingForms = () => {
 
     try {
       // Convert financial files to base64
-      const financialFilesBase64 = {}
-        for (const key in financialFiles) {
-            financialFilesBase64[key] = [];
-            for (const file of financialFiles[key]) {
-                const base64 = await toBase64(file);
-                financialFilesBase64[key].push(base64);
-            }
+      const financialFilesBase64 = {};
+      for (const key in financialFiles) {
+        financialFilesBase64[key] = [];
+        for (const file of financialFiles[key]) {
+          const base64 = await toBase64(file);
+          financialFilesBase64[key].push(base64);
         }
+      }
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
       // Convert client files to base64
       const clientFilesBase64 = [];
       for (const client of clientData) {
@@ -149,10 +141,6 @@ const OnboardingForms = () => {
         }
         clientFilesBase64.push(files);
       }
-<<<<<<< HEAD
-=======
-
->>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
 
       // Convert business files to base64
       const businessFilesBase64 = {};
@@ -174,10 +162,6 @@ const OnboardingForms = () => {
         }
       }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
       const payload = {
         businessData: {
           ...businessData,
@@ -191,73 +175,34 @@ const OnboardingForms = () => {
         })),
       };
 
-      const response = await fetch('http://localhost:3001/submit', {
+      const response = await fetch('http://13.203.196.168:3001/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
-        const result = await response.text();
-        console.log(result);
-        setSuccessMessage('Application submitted successfully.');
-      } else {
-        throw new Error('Failed to submit');
-<<<<<<< HEAD
-
-    const payload = {
-      businessData: {
-        ...businessData,
-        ...businessFilesBase64,
-      },
-      kycData: kycFilesBase64,
-      financialFiles: financialFilesBase64,
-        clientData: {
-          ...clientData,
-          ...clientFilesBase64,
-        },
-    };
-
-      const response = await fetch('http://13.203.196.168:3001/submit', {
-          method: 'POST',
-        headers: {'Content-Type': 'application/json',},
-          body: JSON.stringify(payload),
-      });
-    try {
       if (response.ok) {
         setSuccessMessage('Application submitted successfully!');
       } else {
         const errorText = await response.text();
         setErrorMessage(`Submission failed: ${errorText}`);
-=======
-
->>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
       }
     } catch (error) {
       console.error('Submission error:', error);
       setErrorMessage('An error occurred during submission. Please try again.');
     }
-  };
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-<<<<<<< HEAD
-      <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
-      <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
-=======
-
       <ClientDetailsForm
         clientData={clientData}
         onClientDataChange={handleClientDataChange}
         onAddClient={handleAddClient}
       />
-
->>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">

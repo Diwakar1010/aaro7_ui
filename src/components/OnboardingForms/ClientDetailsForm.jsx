@@ -4,29 +4,30 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
   const [errors, setErrors] = useState({});
 
-  const handleInputChange = (e) => {
-    onClientDataChange(e.target.name, e.target.value);
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target;
+    onClientDataChange(index, name, value);
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, index) => {
     const file = e.target.files[0];
     const fieldName = e.target.name;
 
     if (file && file.size > 5 * 1024 * 1024) {
       setErrors((prev) => ({
         ...prev,
-        [fieldName]: 'File size must not exceed 5MB.',
+        [`${fieldName}-${index}`]: 'File size must not exceed 5MB.',
       }));
-      onClientDataChange(fieldName, null);
+      onClientDataChange(index, fieldName, null);
       e.target.value = '';
       return;
     }
 
-    setErrors((prev) => ({ ...prev, [fieldName]: '' }));
-    onClientDataChange(fieldName, file);
+    setErrors((prev) => ({ ...prev, [`${fieldName}-${index}`]: '' }));
+    onClientDataChange(index, fieldName, file);
   };
 
-    return (
+  return (
     <>
       <div className="d-flex justify-content-end" style={{ marginRight: '110px' }}>
         <Button style={{ backgroundColor: '#167C80' }} onClick={onAddClient}>
@@ -48,14 +49,11 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Client Name */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formClientName">
+              <Form.Group controlId={`formClientName-${index}`}>
                 <Form.Label>Client Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="clientName"
-                  value={clientData.clientName}
-                  onChange={handleInputChange}
-                  placeholder="Enter client name"
+                <Form.Control type="text" name="clientName" value={item.clientName}
+                              onChange={(e) => handleInputChange(e, index)}
+                              placeholder="Enter client name"
                 />
               </Form.Group>
             </Col>
@@ -64,13 +62,10 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Client Type */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formClientType">
+              <Form.Group controlId={`formClientType-${index}`}>
                 <Form.Label>Client Type:</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="clientType"
-                  value={clientData.clientType}
-                  onChange={handleInputChange}
+                <Form.Control as="select" name="clientType" value={item.clientType}
+                              onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
                   <option value="centralgovernment">Central Government</option>
@@ -85,14 +80,11 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Invoice Size */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formInvoiceSize">
+              <Form.Group controlId={`formInvoiceSize-${index}`}>
                 <Form.Label>Last Invoice Amount (INR):</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="invoiceSize"
-                  value={clientData.invoiceSize}
-                  onChange={handleInputChange}
-                  placeholder="Enter invoice size"
+                <Form.Control type="number" name="invoiceSize" value={item.invoiceSize}
+                              onChange={(e) => handleInputChange(e, index)}
+                              placeholder="Enter invoice size"
                 />
               </Form.Group>
             </Col>
@@ -101,13 +93,10 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Payment Cycle */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formPaymentCycle">
+              <Form.Group controlId={`formPaymentCycle-${index}`}>
                 <Form.Label>Payment Cycle: (Days)</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="paymentCycle"
-                  value={clientData.paymentCycle}
-                  onChange={handleInputChange}
+                <Form.Control as="select" name="paymentCycle" value={item.paymentCycle}
+                              onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
                   <option value="15">15 days</option>
@@ -123,13 +112,10 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Start Date */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formStartDate">
+              <Form.Group controlId={`formStartDate-${index}`}>
                 <Form.Label>Project Start Date:</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="startDate"
-                  value={clientData.startDate}
-                  onChange={handleInputChange}
+                <Form.Control type="date" name="startDate" value={item.startDate}
+                              onChange={(e) => handleInputChange(e, index)}
                 />
               </Form.Group>
             </Col>
@@ -138,13 +124,10 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* End Date */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formEndDate">
+              <Form.Group controlId={`formEndDate-${index}`}>
                 <Form.Label>Work order valid till:</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="endDate"
-                  value={clientData.endDate}
-                  onChange={handleInputChange}
+                <Form.Control type="date" name="endDate" value={item.endDate}
+                              onChange={(e) => handleInputChange(e, index)}
                 />
               </Form.Group>
             </Col>
@@ -153,14 +136,16 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Invoice Upload */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formInvoiceUpload">
+              <Form.Group controlId={`formInvoiceUpload-${index}`}>
                 <Form.Label>Upload a recent Invoice: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small></Form.Label>
-                <Form.Control type="file" name="invoiceUpload" onChange={handleFileChange} />
-                {clientData.invoiceUpload && (
-                  <Form.Text muted>{clientData.invoiceUpload.name} Uploaded file</Form.Text>
+                <Form.Control type="file" name="invoiceUpload"
+                              onChange={(e) => handleFileChange(e, index)}
+                />
+                {item.invoiceUpload && (
+                  <Form.Text muted>{item.invoiceUpload.name} Uploaded file</Form.Text>
                 )}
-                {errors.invoiceUpload && (
-                  <div className="text-danger mt-1">{errors.invoiceUpload}</div>
+                {errors[`invoiceUpload-${index}`] && (
+                  <div className="text-danger mt-1">{errors[`invoiceUpload-${index}`]}</div>
                 )}
               </Form.Group>
             </Col>
@@ -169,14 +154,16 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Work Order Upload */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formWorkOrderUpload">
+              <Form.Group controlId={`formWorkOrderUpload-${index}`}>
                 <Form.Label>Work Order Upload <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>:</Form.Label>
-                <Form.Control type="file" name="workOrderUpload" onChange={handleFileChange} />
-                {clientData.workOrderUpload && (
-                  <Form.Text muted>{clientData.workOrderUpload.name} Uploaded file</Form.Text>
+                <Form.Control type="file" name="workOrderUpload"
+                              onChange={(e) => handleFileChange(e, index)}
+                />
+                {item.workOrderUpload && (
+                  <Form.Text muted>{item.workOrderUpload.name} Uploaded file</Form.Text>
                 )}
-                {errors.workOrderUpload && (
-                  <div className="text-danger mt-1">{errors.workOrderUpload}</div>
+                {errors[`workOrderUpload-${index}`] && (
+                  <div className="text-danger mt-1">{errors[`workOrderUpload-${index}`]}</div>
                 )}
               </Form.Group>
             </Col>
@@ -185,23 +172,19 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
           {/* Payroll List Upload */}
           <Row className="mb-3">
             <Col md={12}>
-              <Form.Group controlId="formPayrollListUpload">
-                <Form.Label>Upload employees payroll list: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small></Form.Label>
+              <Form.Group controlId={`formPayrollListUpload-${index}`}>
+                <Form.Label>Upload Employees Payroll List: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small></Form.Label>
                 <Button variant="link" href="public/employee_details.xlsx" download>
                   (download format)
                 </Button>
-                <Form.Control
-                  type="file"
-                  name="payrollListUpload"
-                  onChange={handleFileChange}
-                  accept=".xls,.xlsx"
+                <Form.Control type="file" name="payrollListUpload"
+                              onChange={(e) => handleFileChange(e, index)} accept=".xls,.xlsx"
                 />
-
-                {clientData.payrollListUpload && (
-                  <Form.Text muted>{clientData.payrollListUpload.name} Uploaded file</Form.Text>
+                {item.payrollListUpload && (
+                  <Form.Text muted>{item.payrollListUpload.name} Uploaded file</Form.Text>
                 )}
-                {errors.payrollListUpload && (
-                  <div className="text-danger mt-1">{errors.payrollListUpload}</div>
+                {errors[`payrollListUpload-${index}`] && (
+                  <div className="text-danger mt-1">{errors[`payrollListUpload-${index}`]}</div>
                 )}
               </Form.Group>
             </Col>
