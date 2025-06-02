@@ -186,6 +186,50 @@ const OnboardingForms = () => {
       });
       if (response.ok) {
         setSuccessMessage('Application submitted successfully!');
+        setBusinessData({
+          businessName: '',
+          entity: '',
+          industry: 'Man-power Staffing',
+          businessAge: '',
+          registeredOffice: '',
+          headOffice: '',
+          certificateOfIncorporation: null,
+          moa: null,
+        });
+        setKycData(
+          {
+            psaraLicense: null,
+            panCopy: null,
+            gstCertificate: null,
+            udyamCertificate: null,
+          }
+        )
+        setFinancialFiles({
+          itReturns: [],
+          auditedBalanceSheet: [],
+          bankStatement: [],
+          gstReturns: [],
+          esiProof: [],
+          pfProof: [],
+          existingLoanLetters: [],
+        });
+
+        setClientData(
+          [
+            {
+              clientName: '',
+              clientType: '',
+              invoiceSize: '',
+              paymentCycle: '',
+              startDate: '',
+              endDate: '',
+              invoiceUpload: null,
+              workOrderUpload: null,
+              payrollListUpload: null,
+            }
+          ]
+        );
+
       } else {
         const errorText = await response.text();
         setErrorMessage(`Submission failed: ${errorText}`);
