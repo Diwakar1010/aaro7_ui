@@ -33,6 +33,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
     setErrors(prev => ({ ...prev, [fieldName]: '' }));
     onFilesChange(fieldName, selectedFiles);
   };
+
   const fields = [
     { label: 'IT Returns', field: 'itReturns', maxSizeMB: 5 },
     { label: 'Audited Balance Sheet', field: 'auditedBalanceSheet', maxSizeMB: 5 },
@@ -53,7 +54,10 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               <Form.Label>
                 {label}: <small className="text-muted">(PDF/JPG/PNG, Max {maxSizeMB}MB)</small>
               </Form.Label>
-              <Form.Control type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
+              <Form.Control
+                type="file"
+                multiple
+                accept=".pdf,.jpg,.jpeg,.png"
                 onChange={(e) => handleFileChange(e, field, maxSizeMB)}
               />
               {files[field] && files[field].length > 0 && (

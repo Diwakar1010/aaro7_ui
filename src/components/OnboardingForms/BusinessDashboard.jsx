@@ -28,7 +28,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
     if (file.size > MAX_FILE_SIZE_BYTES) {
       setErrors(prev => ({
         ...prev,
-        [fieldName]: `'Only PDF, JPG, PNG files under ${MAX_FILE_SIZE_MB}MB are allowed.`
+        [fieldName]: `File size exceeds ${MAX_FILE_SIZE_MB}MB limit.`
       }));
       onFormDataChange(fieldName, null);
       event.target.value = '';
@@ -117,7 +117,10 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>
             MoA/AoA: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, 'moa')}
+          <Form.Control
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            onChange={(e) => handleFileChange(e, 'moa')}
           />
           {formData.moa && (
             <Form.Text muted>
