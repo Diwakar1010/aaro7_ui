@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
+function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClient }) {
   const [errors, setErrors] = useState({});
 
   const allowedTypes = {
@@ -64,7 +64,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
         </Button>
       </div>
 
-      {clientData.map((item, index) => (
+      {clientData?.map((item, index) => (
         <Container className="my-2 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }} key={index}>
           <div className="d-flex align-items-center justify-content-start mb-4">
             <h2 className="mb-0 me-2" style={{ color: '#167C80' }}>
@@ -189,6 +189,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 </Form.Label>
                 <Form.Control
                   type="file"
+                  key={`${fileKey}-invoiceUpload-${index}`}
                   name="invoiceUpload"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(e) => handleFileChange(e, index)}
@@ -212,6 +213,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 </Form.Label>
                 <Form.Control
                   type="file"
+                  key={`${fileKey}-workOrderUpload-${index}`}
                   name="workOrderUpload"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(e) => handleFileChange(e, index)}
@@ -239,6 +241,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 </Button>
                 <Form.Control
                   type="file"
+                  key={`${fileKey}-payrollListUpload-${index}`}
                   name="payrollListUpload"
                   accept=".xls,.xlsx"
                   onChange={(e) => handleFileChange(e, index)}

@@ -1,7 +1,7 @@
 import { Container, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
-const BusinessDashboard = ({ formData, onFormDataChange }) => {
+const BusinessDashboard = ({ fileKey, formData, onFormDataChange }) => {
   const [errors, setErrors] = useState({
     certificateOfIncorporation: '',
     moa: ''
@@ -51,14 +51,14 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
       <Form>
         <Form.Group className="mb-3 text-start" controlId="businessName">
           <Form.Label>Business Name:</Form.Label>
-          <Form.Control type="text" placeholder="Enter your business name" value={formData.businessName}
+          <Form.Control type="text" placeholder="Enter your business name" value={formData?.businessName}
                         onChange={(e) => onFormDataChange('businessName', e.target.value)}
           />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="entityType">
           <Form.Label>Type of Entity:</Form.Label>
-          <Form.Select value={formData.entity} onChange={(e) => onFormDataChange('entity', e.target.value)}>
+          <Form.Select value={formData?.entity} onChange={(e) => onFormDataChange('entity', e.target.value)}>
             <option value="">Select</option>
             <option value="proprietorship">Proprietorship</option>
             <option value="partnership">Partnership</option>
@@ -70,26 +70,26 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
 
         <Form.Group className="mb-3 text-start" controlId="industry">
           <Form.Label>Industry/Sector:</Form.Label>
-          <Form.Control type="text" placeholder="Enter industry or sector" value={formData.industry} readOnly />
+          <Form.Control type="text" placeholder="Enter industry or sector" value={formData?.industry} readOnly />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="businessAge">
           <Form.Label>Business Age: (in years)</Form.Label>
-          <Form.Control type="text" placeholder="e.g., 5" value={formData.businessAge}
+          <Form.Control type="text" placeholder="e.g., 5" value={formData?.businessAge}
                         onChange={(e) => onFormDataChange('businessAge', e.target.value)}
           />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="regAddress">
           <Form.Label>Registered Office Address:</Form.Label>
-          <Form.Control as="textarea" rows={2} placeholder="Enter registered office address" value={formData.registeredOffice}
+          <Form.Control as="textarea" rows={2} placeholder="Enter registered office address" value={formData?.registeredOffice}
                         onChange={(e) => onFormDataChange('registeredOffice', e.target.value)}
           />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="headAddress">
           <Form.Label>Head Office Address:</Form.Label>
-          <Form.Control as="textarea" rows={2} placeholder="Enter head office address" value={formData.headOffice}
+          <Form.Control as="textarea" rows={2} placeholder="Enter head office address" value={formData?.headOffice}
                         onChange={(e) => onFormDataChange('headOffice', e.target.value)}
           />
         </Form.Group>
@@ -99,12 +99,12 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>
             Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+          <Form.Control type="file" key={fileKey + "CoI"} accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
           />
-          {formData.certificateOfIncorporation && (
+          {formData?.certificateOfIncorporation && (
             <Form.Text muted>
-              {formData.certificateOfIncorporation.name} File Uploaded
+              {formData?.certificateOfIncorporation?.name} File Uploaded
             </Form.Text>
           )}
           {errors.certificateOfIncorporation && (
@@ -117,12 +117,12 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>
             MoA/AoA: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+          <Form.Control type="file" key={fileKey + "MoA"} accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileChange(e, 'moa')}
           />
-          {formData.moa && (
+          {formData?.moa && (
             <Form.Text muted>
-              {formData.moa.name} File Uploaded
+              {formData?.moa?.name} File Uploaded
             </Form.Text>
           )}
           {errors.moa && (

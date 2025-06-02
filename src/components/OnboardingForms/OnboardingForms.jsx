@@ -6,6 +6,8 @@ import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
 
 const OnboardingForms = () => {
+  const [formKey, setFormKey] = useState(Date.now());
+
   const [businessData, setBusinessData] = useState({
     businessName: '',
     entity: '',
@@ -186,6 +188,7 @@ const OnboardingForms = () => {
       });
       if (response.ok) {
         setSuccessMessage('Application submitted successfully!');
+        setFormKey(Date.now());
         setBusinessData({
           businessName: '',
           entity: '',
@@ -242,10 +245,10 @@ const OnboardingForms = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
-      <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
-      <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-      <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
+      <BusinessDashboard fileKey={formKey + "Bd"} formData={businessData} onFormDataChange={handleBusinessChange} />
+      <KycRegistration fileKey={formKey + "KYC"} formData={kycData} onFormDataChange={handleFormDataChange} />
+      <FinancialSnapshotForm fileKey={formKey + "FS"} files={financialFiles} onFilesChange={handleFinancialFilesChange} />
+      <ClientDetailsForm fileKey={formKey + "CD"} clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
