@@ -46,7 +46,11 @@ const OnboardingForms = () => {
       payrollListUpload: null,
     }
   ]);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -128,7 +132,10 @@ const OnboardingForms = () => {
         }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
       // Convert client files to base64
       const clientFilesBase64 = [];
       for (const client of clientData) {
@@ -142,6 +149,10 @@ const OnboardingForms = () => {
         }
         clientFilesBase64.push(files);
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
 
       // Convert business files to base64
       const businessFilesBase64 = {};
@@ -163,6 +174,10 @@ const OnboardingForms = () => {
         }
       }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
       const payload = {
         businessData: {
           ...businessData,
@@ -190,6 +205,7 @@ const OnboardingForms = () => {
         setSuccessMessage('Application submitted successfully.');
       } else {
         throw new Error('Failed to submit');
+<<<<<<< HEAD
 
     const payload = {
       businessData: {
@@ -215,6 +231,9 @@ const OnboardingForms = () => {
       } else {
         const errorText = await response.text();
         setErrorMessage(`Submission failed: ${errorText}`);
+=======
+
+>>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -227,8 +246,18 @@ const OnboardingForms = () => {
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
+<<<<<<< HEAD
       <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
       <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
+=======
+
+      <ClientDetailsForm
+        clientData={clientData}
+        onClientDataChange={handleClientDataChange}
+        onAddClient={handleAddClient}
+      />
+
+>>>>>>> cfd49c39e202dd964038dba7fb16b004e183d95b
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
