@@ -104,7 +104,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 >
                   <option value="">Select</option>
                   <option value="centralgovernment">Central Government</option>
-                  <option value="telanganastategovernment">State Government</option>
+                  <option value="stategovernment">State Government</option>
                   <option value="privatecompany">(AAA) Private Company</option>
                   <option value="other">Other</option>
                 </Form.Control>
