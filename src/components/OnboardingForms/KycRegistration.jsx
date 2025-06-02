@@ -10,6 +10,7 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
   });
 
   const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+  const MAX_SIZE_MB = 5;
 
   const handleFileChange = (event, fieldName) => {
     const file = event.target.files[0];
@@ -25,11 +26,21 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
       return;
     }
 
-    onFormDataChange(fieldName, file);
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setErrors(prev => ({
+        ...prev,
+        [fieldName]: 'Only PDF, JPG, PNG files under 5MB are allowed.'
+      }));
+      onFormDataChange(fieldName, null);
+      event.target.value = '';
+      return;
+    }
+
     setErrors(prev => ({
       ...prev,
       [fieldName]: ''
     }));
+    onFormDataChange(fieldName, file);
   };
 
   return (
@@ -48,11 +59,10 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
           { label: 'Udyam Certificate', field: 'udyamCertificate' }
         ].map(({ label, field }) => (
           <Form.Group key={field} className="mb-3 text-start" controlId={field}>
-            <Form.Label>{label}: <small className="text-muted">(PDF/JPG/PNG)</small></Form.Label>
-            <Form.Control
-              type="file"
-              accept=".pdf,.jpg,.jpeg,.png"
-              onChange={(e) => handleFileChange(e, field)}
+            <Form.Label>
+              {label}: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
+            </Form.Label>
+            <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, field)}
             />
             {formData[field] && (
               <Form.Text muted>

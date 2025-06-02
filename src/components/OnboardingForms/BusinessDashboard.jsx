@@ -8,6 +8,8 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
   });
 
   const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+  const MAX_FILE_SIZE_MB = 5;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
   const handleFileChange = (event, fieldName) => {
     const file = event.target.files[0];
@@ -18,8 +20,18 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
         ...prev,
         [fieldName]: 'Invalid file type. Please upload PDF, JPG, or PNG files.'
       }));
-      onFormDataChange(fieldName, null); // Clear file on error
-      event.target.value = ''; // Clear file input field
+      onFormDataChange(fieldName, null);
+      event.target.value = '';
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setErrors(prev => ({
+        ...prev,
+        [fieldName]: `'Only PDF, JPG, PNG files under ${MAX_FILE_SIZE_MB}MB are allowed.`
+      }));
+      onFormDataChange(fieldName, null);
+      event.target.value = '';
       return;
     }
 
@@ -58,9 +70,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
 
         <Form.Group className="mb-3 text-start" controlId="industry">
           <Form.Label>Industry/Sector:</Form.Label>
-          <Form.Control type="text" placeholder="Enter industry or sector" value={formData.industry}
-            onChange={(e) => onFormDataChange('industry', e.target.value)}
-          />
+          <Form.Control type="text" placeholder="Enter industry or sector" value={formData.industry} readOnly />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="businessAge">
@@ -87,7 +97,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
         {/* Certificate of Incorporation */}
         <Form.Group className="mb-3 text-start" controlId="incorporation">
           <Form.Label>
-            Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG)</small>
+            Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
           <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
             onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
@@ -105,12 +115,9 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
         {/* MoA */}
         <Form.Group className="mb-4 text-start" controlId="moa">
           <Form.Label>
-            MoA/AoA: <small className="text-muted">(PDF/JPG/PNG)</small>
+            MoA/AoA: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            onChange={(e) => handleFileChange(e, 'moa')}
+          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, 'moa')}
           />
           {formData.moa && (
             <Form.Text muted>
