@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import FinancialSnapshotForm from './FinancialSnapshotForm';
 import ClientDetailsForm from './ClientDetailsForm';
-import { Button, Form, Alert } from 'react-bootstrap';
+import { Button, Form, Alert, Container } from 'react-bootstrap';
 import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
-import { Container } from 'react-bootstrap';
 
 const OnboardingForms = () => {
   const [businessData, setBusinessData] = useState({
@@ -34,6 +33,21 @@ const OnboardingForms = () => {
     pfProof: [],
   });
 
+<<<<<<< HEAD
+  const [clientData, setClientData] = useState([
+    {
+      clientName: '',
+      clientType: '',
+      invoiceSize: '',
+      paymentCycle: '',
+      startDate: '',
+      endDate: '',
+      invoiceUpload: null,
+      workOrderUpload: null,
+      payrollListUpload: null,
+    }
+  ]);
+=======
   const [clientData, setClientData] = useState({
     clientName: '',
     clientType: '',
@@ -45,6 +59,7 @@ const OnboardingForms = () => {
     workOrderUpload: null,
     payrollListUpload: null,
   });
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -70,12 +85,43 @@ const OnboardingForms = () => {
     }));
   };
 
+<<<<<<< HEAD
+  const handleClientDataChange = (index, name, value) => {
+    setClientData(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [name]: value };
+      return updated;
+    });
+  };
+
+  const handleAddClient = () => {
+    if (clientData.length < 3) {
+      setClientData(prev => [
+        ...prev,
+        {
+          clientName: '',
+          clientType: '',
+          invoiceSize: '',
+          paymentCycle: '',
+          startDate: '',
+          endDate: '',
+          invoiceUpload: null,
+          workOrderUpload: null,
+          payrollListUpload: null,
+        }
+      ]);
+    } else {
+      alert("Client cannot be more than 3");
+    }
+  };
+=======
   const handleClientDataChange = (name, value) => {
     setClientData(prev => ({
       ...prev,
       [name]: value,
     }));
 };
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -94,6 +140,7 @@ const OnboardingForms = () => {
     setErrorMessage('');
 
     try {
+      // Convert financial files to base64
       const financialFilesBase64 = {};
       for (const key in financialFiles) {
         financialFilesBase64[key] = [];
@@ -103,6 +150,21 @@ const OnboardingForms = () => {
         }
       }
 
+<<<<<<< HEAD
+      // Convert client files to base64
+      const clientFilesBase64 = [];
+      for (const client of clientData) {
+        const files = {};
+        for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
+          const file = client[key];
+          if (file) {
+            const base64 = await toBase64(file);
+            files[key] = base64;
+          }
+        }
+        clientFilesBase64.push(files);
+      }
+=======
       const clientFilesBase64 = {};
   for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
         const file = clientData[key];
@@ -111,7 +173,9 @@ const OnboardingForms = () => {
           clientFilesBase64[key] = base64;
     }
 }
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
+      // Convert business files to base64
       const businessFilesBase64 = {};
       for (const key of ['certificateOfIncorporation', 'moa']) {
         const file = businessData[key];
@@ -121,6 +185,7 @@ const OnboardingForms = () => {
         }
       }
 
+      // Convert KYC files to base64
       const kycFilesBase64 = {};
       for (const key in kycData) {
         const file = kycData[key];
@@ -130,6 +195,35 @@ const OnboardingForms = () => {
         }
       }
 
+<<<<<<< HEAD
+      const payload = {
+        businessData: {
+          ...businessData,
+          ...businessFilesBase64,
+        },
+        kycData: kycFilesBase64,
+        financialFiles: financialFilesBase64,
+        clientData: clientData.map((client, idx) => ({
+          ...client,
+          ...clientFilesBase64[idx],
+        })),
+      };
+
+      const response = await fetch('http://localhost:3001/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const result = await response.text();
+        console.log(result);
+        setSuccessMessage('Application submitted successfully.');
+      } else {
+        throw new Error('Failed to submit');
+=======
     const payload = {
       businessData: {
         ...businessData,
@@ -154,6 +248,7 @@ const OnboardingForms = () => {
       } else {
         const errorText = await response.text();
         setErrorMessage(`Submission failed: ${errorText}`);
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -166,7 +261,15 @@ const OnboardingForms = () => {
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
+<<<<<<< HEAD
+      <ClientDetailsForm
+        clientData={clientData}
+        onClientDataChange={handleClientDataChange}
+        onAddClient={handleAddClient}
+      />
+=======
       <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
@@ -176,7 +279,6 @@ const OnboardingForms = () => {
           {successMessage && <Alert variant="success" className="text-center">{successMessage}</Alert>}
           {errorMessage && <Alert variant="danger" className="text-center">{errorMessage}</Alert>}
         </Container>
-
       </div>
     </Form>
   );
