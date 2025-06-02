@@ -116,6 +116,8 @@ const OnboardingForms = () => {
       }
     }
 
+    
+
     const kycFilesBase64 = {};
     for (const key in kycData) {
       const file = kycData[key];
