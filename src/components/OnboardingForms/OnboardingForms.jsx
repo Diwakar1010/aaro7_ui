@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import FinancialSnapshotForm from './FinancialSnapshotForm';
 import ClientDetailsForm from './ClientDetailsForm';
-import { Button, Form, Alert } from 'react-bootstrap';
+import { Button, Form, Alert, Container } from 'react-bootstrap';
 import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
-import { Container } from 'react-bootstrap';
 
 const OnboardingForms = () => {
   const [businessData, setBusinessData] = useState({
@@ -34,17 +33,22 @@ const OnboardingForms = () => {
     pfProof: [],
   });
 
-  const [clientData, setClientData] = useState([{
-    clientName: '',
-    clientType: '',
-    invoiceSize: '',
-    paymentCycle: '',
-    startDate: '',
-    endDate: '',
-    invoiceUpload: null,
-    workOrderUpload: null,
-    payrollListUpload: null,
-  }]);
+  const [clientData, setClientData] = useState([
+    {
+      clientName: '',
+      clientType: '',
+      invoiceSize: '',
+      paymentCycle: '',
+      startDate: '',
+      endDate: '',
+      invoiceUpload: null,
+      workOrderUpload: null,
+      payrollListUpload: null,
+    }
+  ]);
+
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFormDataChange = (field, value) => {
     setKycData(prev => ({
@@ -68,33 +72,33 @@ const OnboardingForms = () => {
   };
 
   const handleClientDataChange = (index, name, value) => {
-  setClientData(prev => {
-    const updated = [...prev];
-    updated[index] = { ...updated[index], [name]: value };
-    return updated;
-  });
-};
+    setClientData(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [name]: value };
+      return updated;
+    });
+  };
 
-const handleAddClient = () => {
-  if (clientData.length < 3) {
-    setClientData(prev => [
-      ...prev,
-      {
-        clientName: '',
-        clientType: '',
-        invoiceSize: '',
-        paymentCycle: '',
-        startDate: '',
-        endDate: '',
-        invoiceUpload: null,
-        workOrderUpload: null,
-        payrollListUpload: null,
-      }
-    ]);
-  } else {
-    alert("client cannot be more than 3");
-  }
-};
+  const handleAddClient = () => {
+    if (clientData.length < 3) {
+      setClientData(prev => [
+        ...prev,
+        {
+          clientName: '',
+          clientType: '',
+          invoiceSize: '',
+          paymentCycle: '',
+          startDate: '',
+          endDate: '',
+          invoiceUpload: null,
+          workOrderUpload: null,
+          payrollListUpload: null,
+        }
+      ]);
+    } else {
+      alert("Client cannot be more than 3");
+    }
+  };
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -113,6 +117,7 @@ const handleAddClient = () => {
     setErrorMessage('');
 
     try {
+      // Convert financial files to base64
       const financialFilesBase64 = {};
       for (const key in financialFiles) {
         financialFilesBase64[key] = [];
@@ -122,19 +127,21 @@ const handleAddClient = () => {
         }
       }
 
-    const clientFilesBase64 = [];
-for (const client of clientData) {
-  const files = {};
-  for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
-    const file = client[key];
-    if (file) {
-      const base64 = await toBase64(file);
-      files[key] = base64;
-    }
-  }
-  clientFilesBase64.push(files);
-}
+      // Convert client files to base64
+      const clientFilesBase64 = [];
+      for (const client of clientData) {
+        const files = {};
+        for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
+          const file = client[key];
+          if (file) {
+            const base64 = await toBase64(file);
+            files[key] = base64;
+          }
+        }
+        clientFilesBase64.push(files);
+      }
 
+      // Convert business files to base64
       const businessFilesBase64 = {};
       for (const key of ['certificateOfIncorporation', 'moa']) {
         const file = businessData[key];
@@ -144,6 +151,7 @@ for (const client of clientData) {
         }
       }
 
+      // Convert KYC files to base64
       const kycFilesBase64 = {};
       for (const key in kycData) {
         const file = kycData[key];
@@ -153,33 +161,34 @@ for (const client of clientData) {
         }
       }
 
-    const payload = {
-      businessData: {
-        ...businessData,
-        ...businessFilesBase64,
-        // certificateOfIncorporation: undefined,
-        // moa: undefined,
-      },
-      kycData: kycFilesBase64,
-      financialFiles: financialFilesBase64,
-      clientData: clientData.map((client, idx) => ({
-    ...client,
-    ...clientFilesBase64[idx],
-  })),
-    };
+      const payload = {
+        businessData: {
+          ...businessData,
+          ...businessFilesBase64,
+        },
+        kycData: kycFilesBase64,
+        financialFiles: financialFilesBase64,
+        clientData: clientData.map((client, idx) => ({
+          ...client,
+          ...clientFilesBase64[idx],
+        })),
+      };
 
-    try {
-      const response = await fetch('http://localhost:3001/submit',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-      const result = await response.text();
-      console.log(result);
+      const response = await fetch('http://localhost:3001/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const result = await response.text();
+        console.log(result);
+        setSuccessMessage('Application submitted successfully.');
+      } else {
+        throw new Error('Failed to submit');
+      }
     } catch (error) {
       console.error('Submission error:', error);
       setErrorMessage('An error occurred during submission. Please try again.');
@@ -191,9 +200,10 @@ for (const client of clientData) {
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-      <ClientDetailsForm clientData={clientData}
-      onClientDataChange={handleClientDataChange}
-      onAddClient={handleAddClient}
+      <ClientDetailsForm
+        clientData={clientData}
+        onClientDataChange={handleClientDataChange}
+        onAddClient={handleAddClient}
       />
 
       <div className="mt-2 mb-5 text-center">
@@ -204,7 +214,6 @@ for (const client of clientData) {
           {successMessage && <Alert variant="success" className="text-center">{successMessage}</Alert>}
           {errorMessage && <Alert variant="danger" className="text-center">{errorMessage}</Alert>}
         </Container>
-
       </div>
     </Form>
   );
