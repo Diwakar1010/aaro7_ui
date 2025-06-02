@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-function ClientDetailsForm({ formData, onFormDataChange }) {
-  const [addClient, setAddClient] = useState([1]);
+function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
-    onFormDataChange(e.target.name, e.target.value);
+    onClientDataChange(e.target.name, e.target.value);
   };
 
   const handleFileChange = (e) => {
@@ -18,32 +17,24 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
         ...prev,
         [fieldName]: 'File size must not exceed 5MB.',
       }));
-      onFormDataChange(fieldName, null);
+      onClientDataChange(fieldName, null);
       e.target.value = '';
       return;
     }
 
     setErrors((prev) => ({ ...prev, [fieldName]: '' }));
-    onFormDataChange(fieldName, file);
+    onClientDataChange(fieldName, file);
   };
 
-  const handleAddDetails = () => {
-    if (addClient.length < 3) {
-      setAddClient([...addClient, 1]);
-    } else {
-      alert('Client cannot be more than 3');
-    }
-  };
-
-  return (
+    return (
     <>
       <div className="d-flex justify-content-end" style={{ marginRight: '110px' }}>
-        <Button style={{ backgroundColor: '#167C80' }} onClick={handleAddDetails}>
+        <Button style={{ backgroundColor: '#167C80' }} onClick={onAddClient}>
           Add Client
         </Button>
       </div>
 
-      {addClient.map((item, index) => (
+      {clientData.map((item, index) => (
         <Container className="my-2 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }} key={index}>
           <div className="d-flex align-items-center justify-content-start mb-4">
             <h2 className="mb-0 me-2" style={{ color: '#167C80' }}>
@@ -62,7 +53,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                 <Form.Control
                   type="text"
                   name="clientName"
-                  value={formData.clientName}
+                  value={clientData.clientName}
                   onChange={handleInputChange}
                   placeholder="Enter client name"
                 />
@@ -78,7 +69,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                 <Form.Control
                   as="select"
                   name="clientType"
-                  value={formData.clientType}
+                  value={clientData.clientType}
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
@@ -99,7 +90,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                 <Form.Control
                   type="number"
                   name="invoiceSize"
-                  value={formData.invoiceSize}
+                  value={clientData.invoiceSize}
                   onChange={handleInputChange}
                   placeholder="Enter invoice size"
                 />
@@ -115,7 +106,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                 <Form.Control
                   as="select"
                   name="paymentCycle"
-                  value={formData.paymentCycle}
+                  value={clientData.paymentCycle}
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
@@ -137,7 +128,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                 <Form.Control
                   type="date"
                   name="startDate"
-                  value={formData.startDate}
+                  value={clientData.startDate}
                   onChange={handleInputChange}
                 />
               </Form.Group>
@@ -152,7 +143,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                 <Form.Control
                   type="date"
                   name="endDate"
-                  value={formData.endDate}
+                  value={clientData.endDate}
                   onChange={handleInputChange}
                 />
               </Form.Group>
@@ -163,11 +154,10 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId="formInvoiceUpload">
-                <Form.Label>Upload a recent Invoice:</Form.Label>
+                <Form.Label>Upload a recent Invoice: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small></Form.Label>
                 <Form.Control type="file" name="invoiceUpload" onChange={handleFileChange} />
-                <Form.Text muted>Each file should not exceed 5 MB.</Form.Text>
-                {formData.invoiceUpload && (
-                  <Form.Text muted>{formData.invoiceUpload.name} Uploaded file</Form.Text>
+                {clientData.invoiceUpload && (
+                  <Form.Text muted>{clientData.invoiceUpload.name} Uploaded file</Form.Text>
                 )}
                 {errors.invoiceUpload && (
                   <div className="text-danger mt-1">{errors.invoiceUpload}</div>
@@ -180,11 +170,10 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId="formWorkOrderUpload">
-                <Form.Label>Work Order Upload (.xls, .xlsx):</Form.Label>
+                <Form.Label>Work Order Upload <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>:</Form.Label>
                 <Form.Control type="file" name="workOrderUpload" onChange={handleFileChange} />
-                <Form.Text muted>Each file should not exceed 5 MB.</Form.Text>
-                {formData.workOrderUpload && (
-                  <Form.Text muted>{formData.workOrderUpload.name} Uploaded file</Form.Text>
+                {clientData.workOrderUpload && (
+                  <Form.Text muted>{clientData.workOrderUpload.name} Uploaded file</Form.Text>
                 )}
                 {errors.workOrderUpload && (
                   <div className="text-danger mt-1">{errors.workOrderUpload}</div>
@@ -197,7 +186,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId="formPayrollListUpload">
-                <Form.Label>Upload employees payroll list (xls/xlsx):</Form.Label>
+                <Form.Label>Upload employees payroll list: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small></Form.Label>
                 <Button variant="link" href="public/employee_details.xlsx" download>
                   (download format)
                 </Button>
@@ -207,9 +196,9 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
                   onChange={handleFileChange}
                   accept=".xls,.xlsx"
                 />
-                <Form.Text muted>Each file should not exceed 5 MB.</Form.Text>
-                {formData.payrollListUpload && (
-                  <Form.Text muted>{formData.payrollListUpload.name} Uploaded file</Form.Text>
+
+                {clientData.payrollListUpload && (
+                  <Form.Text muted>{clientData.payrollListUpload.name} Uploaded file</Form.Text>
                 )}
                 {errors.payrollListUpload && (
                   <div className="text-danger mt-1">{errors.payrollListUpload}</div>
