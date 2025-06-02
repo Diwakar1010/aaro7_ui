@@ -80,12 +80,9 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formClientName-${index}`}>
                 <Form.Label>Client Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="clientName"
-                  value={item.clientName}
-                  onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Enter client name"
+                <Form.Control type="text" name="clientName" value={item.clientName}
+                              onChange={(e) => handleInputChange(e, index)}
+                              placeholder="Enter client name"
                 />
               </Form.Group>
             </Col>
@@ -96,11 +93,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formClientType-${index}`}>
                 <Form.Label>Client Type:</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="clientType"
-                  value={item.clientType}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control as="select" name="clientType" value={item.clientType}
+                              onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
                   <option value="centralgovernment">Central Government</option>
@@ -117,12 +111,9 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formInvoiceSize-${index}`}>
                 <Form.Label>Last Invoice Amount (INR):</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="invoiceSize"
-                  value={item.invoiceSize}
-                  onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Enter invoice size"
+                <Form.Control type="number" name="invoiceSize" value={item.invoiceSize}
+                              onChange={(e) => handleInputChange(e, index)}
+                              placeholder="Enter invoice size"
                 />
               </Form.Group>
             </Col>
@@ -133,11 +124,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formPaymentCycle-${index}`}>
                 <Form.Label>Payment Cycle: (Days)</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="paymentCycle"
-                  value={item.paymentCycle}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control as="select" name="paymentCycle" value={item.paymentCycle}
+                              onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
                   <option value="15">15 days</option>
@@ -155,11 +143,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formStartDate-${index}`}>
                 <Form.Label>Project Start Date:</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="startDate"
-                  value={item.startDate}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control type="date" name="startDate" value={item.startDate}
+                              onChange={(e) => handleInputChange(e, index)}
                 />
               </Form.Group>
             </Col>
@@ -170,11 +155,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formEndDate-${index}`}>
                 <Form.Label>Work order valid till:</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="endDate"
-                  value={item.endDate}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control type="date" name="endDate" value={item.endDate}
+                              onChange={(e) => handleInputChange(e, index)}
                 />
               </Form.Group>
             </Col>
@@ -187,11 +169,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 <Form.Label>
                   Upload a recent Invoice: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
                 </Form.Label>
-                <Form.Control
-                  type="file"
-                  name="invoiceUpload"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => handleFileChange(e, index)}
+                <Form.Control type="file" name="invoiceUpload" accept=".pdf,.jpg,.jpeg,.png"
+                              onChange={(e) => handleFileChange(e, index)}
                 />
                 {item.invoiceUpload && (
                   <Form.Text muted>{item.invoiceUpload.name} Uploaded file</Form.Text>
@@ -210,11 +189,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 <Form.Label>
                   Work Order Upload <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>:
                 </Form.Label>
-                <Form.Control
-                  type="file"
-                  name="workOrderUpload"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => handleFileChange(e, index)}
+                <Form.Control type="file" name="workOrderUpload" accept=".pdf,.jpg,.jpeg,.png"
+                              onChange={(e) => handleFileChange(e, index)}
                 />
                 {item.workOrderUpload && (
                   <Form.Text muted>{item.workOrderUpload.name} Uploaded file</Form.Text>
@@ -237,11 +213,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 <Button variant="link" href="public/employee_details.xlsx" download>
                   (download format)
                 </Button>
-                <Form.Control
-                  type="file"
-                  name="payrollListUpload"
-                  accept=".xls,.xlsx"
-                  onChange={(e) => handleFileChange(e, index)}
+                <Form.Control type="file" name="payrollListUpload" accept=".xls,.xlsx"
+                              onChange={(e) => handleFileChange(e, index)}
                 />
                 {item.payrollListUpload && (
                   <Form.Text muted>{item.payrollListUpload.name} Uploaded file</Form.Text>

@@ -67,7 +67,7 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
             />
             {formData[field] && (
               <Form.Text muted>
-                <br />{formData[field].name} File Uploaded
+                {formData[field].name} File Uploaded
               </Form.Text>
             )}
             {errors[field] && (
