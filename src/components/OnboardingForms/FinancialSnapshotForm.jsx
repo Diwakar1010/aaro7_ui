@@ -53,10 +53,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               <Form.Label>
                 {label}: <small className="text-muted">(PDF/JPG/PNG, Max {maxSizeMB}MB)</small>
               </Form.Label>
-              <Form.Control
-                type="file"
-                multiple
-                accept=".pdf,.jpg,.jpeg,.png"
+              <Form.Control type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
                 onChange={(e) => handleFileChange(e, field, maxSizeMB)}
               />
               {files[field] && files[field].length > 0 && (

@@ -62,7 +62,8 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
             <Form.Label>
               {label}: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
             </Form.Label>
-            <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={(e) => handleFileChange(e, field)}
+            <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={(e) => handleFileChange(e, field)}
             />
             {formData[field] && (
               <Form.Text muted>
