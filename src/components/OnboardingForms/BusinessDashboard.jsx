@@ -52,7 +52,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
         <Form.Group className="mb-3 text-start" controlId="businessName">
           <Form.Label>Business Name:</Form.Label>
           <Form.Control type="text" placeholder="Enter your business name" value={formData.businessName}
-            onChange={(e) => onFormDataChange('businessName', e.target.value)}
+                        onChange={(e) => onFormDataChange('businessName', e.target.value)}
           />
         </Form.Group>
 
@@ -76,21 +76,21 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
         <Form.Group className="mb-3 text-start" controlId="businessAge">
           <Form.Label>Business Age: (in years)</Form.Label>
           <Form.Control type="text" placeholder="e.g., 5" value={formData.businessAge}
-            onChange={(e) => onFormDataChange('businessAge', e.target.value)}
+                        onChange={(e) => onFormDataChange('businessAge', e.target.value)}
           />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="regAddress">
           <Form.Label>Registered Office Address:</Form.Label>
           <Form.Control as="textarea" rows={2} placeholder="Enter registered office address" value={formData.registeredOffice}
-            onChange={(e) => onFormDataChange('registeredOffice', e.target.value)}
+                        onChange={(e) => onFormDataChange('registeredOffice', e.target.value)}
           />
         </Form.Group>
 
         <Form.Group className="mb-3 text-start" controlId="headAddress">
           <Form.Label>Head Office Address:</Form.Label>
           <Form.Control as="textarea" rows={2} placeholder="Enter head office address" value={formData.headOffice}
-            onChange={(e) => onFormDataChange('headOffice', e.target.value)}
+                        onChange={(e) => onFormDataChange('headOffice', e.target.value)}
           />
         </Form.Group>
 
@@ -100,11 +100,11 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
             Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
           <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
-            onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
+                        onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
           />
           {formData.certificateOfIncorporation && (
             <Form.Text muted>
-              <br />Selected file: {formData.certificateOfIncorporation.name}
+              {formData.certificateOfIncorporation.name} Uploaded file
             </Form.Text>
           )}
           {errors.certificateOfIncorporation && (
@@ -117,14 +117,12 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>
             MoA/AoA: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            onChange={(e) => handleFileChange(e, 'moa')}
+          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={(e) => handleFileChange(e, 'moa')}
           />
           {formData.moa && (
             <Form.Text muted>
-              <br />Selected file: {formData.moa.name}
+              {formData.moa.name} Uploaded file
             </Form.Text>
           )}
           {errors.moa && (
