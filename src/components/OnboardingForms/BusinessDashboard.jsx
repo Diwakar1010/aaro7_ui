@@ -104,7 +104,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           />
           {formData.certificateOfIncorporation && (
             <Form.Text muted>
-              {formData.certificateOfIncorporation.name} Uploaded file
+              {formData.certificateOfIncorporation.name} File Uploaded
             </Form.Text>
           )}
           {errors.certificateOfIncorporation && (
@@ -122,7 +122,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           />
           {formData.moa && (
             <Form.Text muted>
-              {formData.moa.name} Uploaded file
+              {formData.moa.name} File Uploaded
             </Form.Text>
           )}
           {errors.moa && (

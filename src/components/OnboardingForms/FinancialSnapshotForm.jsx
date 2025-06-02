@@ -56,16 +56,13 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               <Form.Label>
                 {label}: <small className="text-muted">(PDF/JPG/PNG, Max {maxSizeMB}MB)</small>
               </Form.Label>
-              <Form.Control
-                type="file"
-                multiple
-                accept=".pdf,.jpg,.jpeg,.png"
-                onChange={(e) => handleFileChange(e, field, maxSizeMB)}
+              <Form.Control type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
+                            onChange={(e) => handleFileChange(e, field, maxSizeMB)}
               />
               {files[field] && files[field].length > 0 && (
                 <Form.Text muted>
                   <br />
-                  {files[field].map(file => file.name).join(', ')} Uploaded file{files[field].length > 1 ? 's' : ''}
+                  {files[field].map(file => file.name).join(', ')} Files Uploaded{files[field].length > 1 ? 's' : ''}
                 </Form.Text>
               )}
               {errors[field] && (

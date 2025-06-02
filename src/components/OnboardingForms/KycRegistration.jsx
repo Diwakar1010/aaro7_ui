@@ -29,7 +29,7 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       setErrors(prev => ({
         ...prev,
-        [fieldName]: 'Only PDF, JPG, PNG files under 5MB are allowed.'
+        [fieldName]: 'File size must not exceed 5MB.'
       }));
       onFormDataChange(fieldName, null);
       event.target.value = '';
@@ -67,7 +67,7 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
             />
             {formData[field] && (
               <Form.Text muted>
-                <br />{formData[field].name} Uploaded file
+                <br />{formData[field].name} File Uploaded
               </Form.Text>
             )}
             {errors[field] && (
