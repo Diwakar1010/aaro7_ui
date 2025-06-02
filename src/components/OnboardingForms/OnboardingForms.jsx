@@ -33,6 +33,7 @@ const OnboardingForms = () => {
     pfProof: [],
   });
 
+<<<<<<< HEAD
   const [clientData, setClientData] = useState([
     {
       clientName: '',
@@ -46,6 +47,19 @@ const OnboardingForms = () => {
       payrollListUpload: null,
     }
   ]);
+=======
+  const [clientData, setClientData] = useState({
+    clientName: '',
+    clientType: '',
+    invoiceSize: '',
+    paymentCycle: '',
+    startDate: '',
+    endDate: '',
+    invoiceUpload: null,
+    workOrderUpload: null,
+    payrollListUpload: null,
+  });
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -71,6 +85,7 @@ const OnboardingForms = () => {
     }));
   };
 
+<<<<<<< HEAD
   const handleClientDataChange = (index, name, value) => {
     setClientData(prev => {
       const updated = [...prev];
@@ -99,6 +114,14 @@ const OnboardingForms = () => {
       alert("Client cannot be more than 3");
     }
   };
+=======
+  const handleClientDataChange = (name, value) => {
+    setClientData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+};
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -127,6 +150,7 @@ const OnboardingForms = () => {
         }
       }
 
+<<<<<<< HEAD
       // Convert client files to base64
       const clientFilesBase64 = [];
       for (const client of clientData) {
@@ -140,6 +164,16 @@ const OnboardingForms = () => {
         }
         clientFilesBase64.push(files);
       }
+=======
+      const clientFilesBase64 = {};
+  for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
+        const file = clientData[key];
+    if (file) {
+      const base64 = await toBase64(file);
+          clientFilesBase64[key] = base64;
+    }
+}
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
       // Convert business files to base64
       const businessFilesBase64 = {};
@@ -161,6 +195,7 @@ const OnboardingForms = () => {
         }
       }
 
+<<<<<<< HEAD
       const payload = {
         businessData: {
           ...businessData,
@@ -188,6 +223,32 @@ const OnboardingForms = () => {
         setSuccessMessage('Application submitted successfully.');
       } else {
         throw new Error('Failed to submit');
+=======
+    const payload = {
+      businessData: {
+        ...businessData,
+        ...businessFilesBase64,
+      },
+      kycData: kycFilesBase64,
+      financialFiles: financialFilesBase64,
+        clientData: {
+          ...clientData,
+          ...clientFilesBase64,
+        },
+    };
+
+      const response = await fetch('http://13.203.196.168:3001/submit', {
+          method: 'POST',
+        headers: {'Content-Type': 'application/json',},
+          body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('Application submitted successfully!');
+      } else {
+        const errorText = await response.text();
+        setErrorMessage(`Submission failed: ${errorText}`);
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -200,11 +261,15 @@ const OnboardingForms = () => {
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
+<<<<<<< HEAD
       <ClientDetailsForm
         clientData={clientData}
         onClientDataChange={handleClientDataChange}
         onAddClient={handleAddClient}
       />
+=======
+      <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
+>>>>>>> c5ef351b07a7e67fe8b2c8ee0ba36f0d86de358a
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
