@@ -85,7 +85,7 @@ function ClientDetailsForm({ formData, onFormDataChange }) {
             <Col md={12}>
               <Form.Group controlId="formInvoiceSize">
                 <Form.Label>Last Invoice Amount (INR):</Form.Label>
-                <Form.Control type="number" name="invoiceSize" value={formData.invoiceSize} onChange={handleInputChange} placeholder="Enter invoice size"/>
+                <Form.Control type="number" name="invoiceSize" value={formData.invoiceSize} onChange={handleInputChange} placeholder="Enter Invoice size"/>
               </Form.Group>
             </Col>
           </Row>

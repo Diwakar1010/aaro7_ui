@@ -33,7 +33,6 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
     setErrors(prev => ({ ...prev, [fieldName]: '' }));
     onFilesChange(fieldName, selectedFiles);
   };
-
   const fields = [
     { label: 'IT Returns', field: 'itReturns', maxSizeMB: 5 },
     { label: 'Audited Balance Sheet', field: 'auditedBalanceSheet', maxSizeMB: 5 },
