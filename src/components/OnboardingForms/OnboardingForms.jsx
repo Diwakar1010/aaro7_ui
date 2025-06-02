@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import FinancialSnapshotForm from './FinancialSnapshotForm';
 import ClientDetailsForm from './ClientDetailsForm';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
 import { Container } from 'react-bootstrap';
-
 
 const OnboardingForms = () => {
   const [businessData, setBusinessData] = useState({
@@ -46,6 +45,9 @@ const OnboardingForms = () => {
     workOrderUpload: null,
     payrollListUpload: null,
   });
+
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFormDataChange = (field, value) => {
     setKycData(prev => ({
@@ -88,84 +90,81 @@ const OnboardingForms = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const financialFilesBase64 = {};
-    for (const key in financialFiles) {
-      financialFilesBase64[key] = [];
-      for (const file of financialFiles[key]) {
-        const base64 = await toBase64(file);
-        financialFilesBase64[key].push(base64);
-      }
-    }
-
-    const clientFilesBase64 = {};
-    for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
-      const file = clientData[key];
-      if (file) {
-        const base64 = await toBase64(file);
-        clientFilesBase64[key] = base64;
-      }
-    }
-
-    const businessFilesBase64 = {};
-    for (const key of ['certificateOfIncorporation', 'moa']) {
-      const file = businessData[key];
-      if (file) {
-        const base64 = await toBase64(file);
-        businessFilesBase64[key] = base64;
-      }
-    }
-
-    
-
-    const kycFilesBase64 = {};
-    for (const key in kycData) {
-      const file = kycData[key];
-      if (file) {
-        const base64 = await toBase64(file);
-        kycFilesBase64[key] = base64;
-      }
-    }
-
-    const payload = {
-      businessData: {
-        ...businessData,
-        ...businessFilesBase64,
-
-      },
-      kycData: kycFilesBase64,
-      financialFiles: financialFilesBase64,
-      clientData: {
-        ...clientData,
-        ...clientFilesBase64,
-      },
-    };
+    setSuccessMessage('');
+    setErrorMessage('');
 
     try {
-      const response = await fetch(' http://13.203.196.168:3001/submit',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
+      const financialFilesBase64 = {};
+      for (const key in financialFiles) {
+        financialFilesBase64[key] = [];
+        for (const file of financialFiles[key]) {
+          const base64 = await toBase64(file);
+          financialFilesBase64[key].push(base64);
         }
-      );
-      const result = await response.text();
-      console.log(result);
+      }
+
+      const clientFilesBase64 = {};
+      for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
+        const file = clientData[key];
+        if (file) {
+          const base64 = await toBase64(file);
+          clientFilesBase64[key] = base64;
+        }
+      }
+
+      const businessFilesBase64 = {};
+      for (const key of ['certificateOfIncorporation', 'moa']) {
+        const file = businessData[key];
+        if (file) {
+          const base64 = await toBase64(file);
+          businessFilesBase64[key] = base64;
+        }
+      }
+
+      const kycFilesBase64 = {};
+      for (const key in kycData) {
+        const file = kycData[key];
+        if (file) {
+          const base64 = await toBase64(file);
+          kycFilesBase64[key] = base64;
+        }
+      }
+
+      const payload = {
+        businessData: {
+          ...businessData,
+          ...businessFilesBase64,
+        },
+        kycData: kycFilesBase64,
+        financialFiles: financialFilesBase64,
+        clientData: {
+          ...clientData,
+          ...clientFilesBase64,
+        },
+      };
+
+      const response = await fetch('http://13.203.196.168:3001/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('Application submitted successfully!');
+      } else {
+        const errorText = await response.text();
+        setErrorMessage(`Submission failed: ${errorText}`);
+      }
     } catch (error) {
       console.error('Submission error:', error);
+      setErrorMessage('An error occurred during submission. Please try again.');
     }
-
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Container className="my-4">
-        <h1 className="text-center" style={{ color: '#167C80' }}>
-          Aaro7 - Onboarding Form
-        </h1>
-      </Container>
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
@@ -175,6 +174,11 @@ const OnboardingForms = () => {
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
           Submit Application
         </Button>
+        <Container className="my-4">
+          {successMessage && <Alert variant="success" className="text-center">{successMessage}</Alert>}
+          {errorMessage && <Alert variant="danger" className="text-center">{errorMessage}</Alert>}
+        </Container>
+
       </div>
     </Form>
   );
