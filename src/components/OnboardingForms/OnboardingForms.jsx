@@ -34,7 +34,7 @@ const OnboardingForms = () => {
     pfProof: [],
   });
 
-  const [clientData, setClientData] = useState({
+  const [clientData, setClientData] = useState([{
     clientName: '',
     clientType: '',
     invoiceSize: '',
@@ -44,10 +44,7 @@ const OnboardingForms = () => {
     invoiceUpload: null,
     workOrderUpload: null,
     payrollListUpload: null,
-  });
-
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  }]);
 
   const handleFormDataChange = (field, value) => {
     setKycData(prev => ({
@@ -70,12 +67,34 @@ const OnboardingForms = () => {
     }));
   };
 
-  const handleClientDataChange = (name, value) => {
-    setClientData(prev => ({
+  const handleClientDataChange = (index, name, value) => {
+  setClientData(prev => {
+    const updated = [...prev];
+    updated[index] = { ...updated[index], [name]: value };
+    return updated;
+  });
+};
+
+const handleAddClient = () => {
+  if (clientData.length < 3) {
+    setClientData(prev => [
       ...prev,
-      [name]: value,
-    }));
-  };
+      {
+        clientName: '',
+        clientType: '',
+        invoiceSize: '',
+        paymentCycle: '',
+        startDate: '',
+        endDate: '',
+        invoiceUpload: null,
+        workOrderUpload: null,
+        payrollListUpload: null,
+      }
+    ]);
+  } else {
+    alert("client cannot be more than 3");
+  }
+};
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -103,14 +122,18 @@ const OnboardingForms = () => {
         }
       }
 
-      const clientFilesBase64 = {};
-      for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
-        const file = clientData[key];
-        if (file) {
-          const base64 = await toBase64(file);
-          clientFilesBase64[key] = base64;
-        }
-      }
+    const clientFilesBase64 = [];
+for (const client of clientData) {
+  const files = {};
+  for (const key of ['invoiceUpload', 'workOrderUpload', 'payrollListUpload']) {
+    const file = client[key];
+    if (file) {
+      const base64 = await toBase64(file);
+      files[key] = base64;
+    }
+  }
+  clientFilesBase64.push(files);
+}
 
       const businessFilesBase64 = {};
       for (const key of ['certificateOfIncorporation', 'moa']) {
@@ -130,31 +153,33 @@ const OnboardingForms = () => {
         }
       }
 
-      const payload = {
-        businessData: {
-          ...businessData,
-          ...businessFilesBase64,
-        },
-        kycData: kycFilesBase64,
-        financialFiles: financialFilesBase64,
-        clientData: {
-          ...clientData,
-          ...clientFilesBase64,
-        },
-      };
+    const payload = {
+      businessData: {
+        ...businessData,
+        ...businessFilesBase64,
+        // certificateOfIncorporation: undefined,
+        // moa: undefined,
+      },
+      kycData: kycFilesBase64,
+      financialFiles: financialFilesBase64,
+      clientData: clientData.map((client, idx) => ({
+    ...client,
+    ...clientFilesBase64[idx],
+  })),
+    };
 
-      const response = await fetch('http://13.203.196.168:3001/submit', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json',},
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        setSuccessMessage('Application submitted successfully!');
-      } else {
-        const errorText = await response.text();
-        setErrorMessage(`Submission failed: ${errorText}`);
-      }
+    try {
+      const response = await fetch('http://localhost:3001/submit',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      const result = await response.text();
+      console.log(result);
     } catch (error) {
       console.error('Submission error:', error);
       setErrorMessage('An error occurred during submission. Please try again.');
@@ -166,7 +191,10 @@ const OnboardingForms = () => {
       <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
       <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
       <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-      <ClientDetailsForm formData={clientData} onFormDataChange={handleClientDataChange} />
+      <ClientDetailsForm clientData={clientData}
+      onClientDataChange={handleClientDataChange}
+      onAddClient={handleAddClient}
+      />
 
       <div className="mt-2 mb-5 text-center">
         <Button style={{ backgroundColor: '#167C80' }} type="submit">
