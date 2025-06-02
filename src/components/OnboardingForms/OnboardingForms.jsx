@@ -145,9 +145,7 @@ const OnboardingForms = () => {
 
       const response = await fetch('http://13.203.196.168:3001/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json',},
         body: JSON.stringify(payload),
       });
 
