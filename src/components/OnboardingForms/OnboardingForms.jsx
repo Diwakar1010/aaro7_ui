@@ -168,7 +168,7 @@ const OnboardingForms = () => {
         })),
       };
 
-      const response = await fetch('http://localhost/submit', {
+      const response = await fetch('http://3.111.52.30/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
