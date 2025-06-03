@@ -1,146 +1,78 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Container, Row, Col } from 'react-bootstrap';
 
-function FinancialSnapshotForm() {
-  const [files, setFiles] = useState({
-    itReturns: null,
-    auditedBalanceSheet: null,
-    bankStatement: null,
-    gstReturns: null,
-    esiProof: null,
-    pfProof: null,
+function FinancialSnapshotForm({fileKey, files, onFilesChange }) {
+  const [errors, setErrors] = useState({
+    itReturns: '',
+    auditedBalanceSheet: '',
+    bankStatement: '',
+    gstReturns: '',
+    esiProof: '',
+    pfProof: '',
+    existingLoanLetters: '',
   });
 
-  const handleFileChange = (event, fieldName) => {
-    setFiles({
-      ...files,
-      [fieldName]: event.target.files[0], // Only take the first file if multiple are selected
-    });
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+
+  const handleFileChange = (event, fieldName, maxSizeMB) => {
+    const selectedFiles = Array.from(event.target.files);
+
+    const invalidFiles = selectedFiles.filter(
+      file => !allowedTypes.includes(file.type) || file.size > maxSizeMB * 1024 * 1024
+    );
+
+    if (invalidFiles.length > 0) {
+      setErrors(prev => ({
+        ...prev,
+        [fieldName]: `Only PDF, JPG, PNG files under ${maxSizeMB}MB are allowed.`,
+      }));
+      onFilesChange(fieldName, []);
+      event.target.value = '';
+      return;
+    }
+
+    setErrors(prev => ({ ...prev, [fieldName]: '' }));
+    onFilesChange(fieldName, selectedFiles);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Submitted Files:', files);
-    // Here you would typically send the files to a server, e.g., using FormData and fetch or Axios
-    // Example of how to prepare for sending:
-    // const formData = new FormData();
-    // for (const key in files) {
-    //   if (files[key]) {
-    //     formData.append(key, files[key]);
-    //   }
-    // }
-    // console.log(formData); // You can't directly inspect formData contents, but it's ready to be sent
-    // Example fetch call:
-    // fetch('/api/upload', {
-    //   method: 'POST',
-    //   body: formData,
-    // })
-    // .then(response => response.json())
-    // .then(data => console.log('Upload success:', data))
-    // .catch(error => console.error('Upload error:', error));
-  };
+  const fields = [
+    { label: 'IT Returns (Last 1 Year)', field: 'itReturns', maxSizeMB: 5 },
+    { label: 'Audited Balance Sheet (Last 1 Year)', field: 'auditedBalanceSheet', maxSizeMB: 5 },
+    { label: 'Bank Statement (Last 1 Year)', field: 'bankStatement', maxSizeMB: 10 },
+    { label: 'Existing Loan Sanction Letters', field: 'existingSanctionLoanLetters', maxSizeMB: 5 },
+    { label: 'GST Returns (Last 3 Months)', field: 'gstReturns', maxSizeMB: 5 },
+    { label: 'ESI Proof (Last 6 Months)', field: 'esiProof', maxSizeMB: 5 },
+    { label: 'PF Proof (Last 6 Months)', field: 'pfProof', maxSizeMB: 5 },
+
+  ];
 
   return (
-    <Container className="my-5">
-      <h2 className="mb-4">Financial Snapshot </h2>
-      <Form onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Col md={6}>
-            <Form.Group controlId="formITReturns">
-              <Form.Label>IT Returns:</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileChange(e, 'itReturns')}
+    <Container className="my-5 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }}>
+      <h2 className="mb-4" style={{ color: '#167C80' }}>Financial Snapshot</h2>
+
+      {fields.map(({ label, field, maxSizeMB }) => (
+        <Row className="mb-3" key={field}>
+          <Col md={12}>
+            <Form.Group controlId={`form-${field}`}>
+              <Form.Label>
+                {label}: <small className="text-muted">(PDF/JPG/PNG, Max {maxSizeMB}MB)</small>
+              </Form.Label>
+              <Form.Control type="file" key={`${fileKey}-${field}`} multiple accept=".pdf,.jpg,.jpeg,.png"
+                            onChange={(e) => handleFileChange(e, field, maxSizeMB)}
               />
-              {files.itReturns && (
+              {files[field] && files[field].length > 0 && (
                 <Form.Text muted>
-                  Selected file: {files.itReturns.name}
+                  <br />
+                  {files[field].map(file => file.name).join(', ')} Files Uploaded{files[field].length > 1 ? 's' : ''}
                 </Form.Text>
               )}
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="formAuditedBalanceSheet">
-              <Form.Label>Audited Balance Sheet:</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileChange(e, 'auditedBalanceSheet')}
-              />
-              {files.auditedBalanceSheet && (
-                <Form.Text muted>
-                  Selected file: {files.auditedBalanceSheet.name}
-                </Form.Text>
+              {errors[field] && (
+                <div className="text-danger mt-1">{errors[field]}</div>
               )}
             </Form.Group>
           </Col>
         </Row>
-
-        <Row className="mb-3">
-          <Col md={6}>
-            <Form.Group controlId="formBankStatement">
-              <Form.Label>Bank Statement:</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileChange(e, 'bankStatement')}
-              />
-              {files.bankStatement && (
-                <Form.Text muted>
-                  Selected file: {files.bankStatement.name}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="formGSTReturns">
-              <Form.Label>GST Returns:</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileChange(e, 'gstReturns')}
-              />
-              {files.gstReturns && (
-                <Form.Text muted>
-                  Selected file: {files.gstReturns.name}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row className="mb-3">
-          <Col md={6}>
-            <Form.Group controlId="formESIProof">
-              <Form.Label>ESI Proof:</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileChange(e, 'esiProof')}
-              />
-              {files.esiProof && (
-                <Form.Text muted>
-                  Selected file: {files.esiProof.name}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="formPFProof">
-              <Form.Label>PF Proof:</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileChange(e, 'pfProof')}
-              />
-              {files.pfProof && (
-                <Form.Text muted>
-                  Selected file: {files.pfProof.name}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Button variant="primary" type="submit">
-          Upload Documents
-        </Button>
-      </Form>
+      ))}
     </Container>
   );
 }
