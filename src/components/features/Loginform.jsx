@@ -9,15 +9,28 @@ function LoginForm() {
   const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
 
-  const validCredentials = {
-    email: 'admin@example.com',
-    password: 'password123',
-  };
+  const validCredentials = [{
+    email: 'Vikas.kumar@guardiansgroup.in',
+    password: 'aaro7guardians7#',
+  },
+  {
+    email: 'saharafms@gmail.com',
+    password: 'aaro7sahara7#',
+  },
+  {
+    email: 'cvrbenarjee@gmail.com',
+    password: 'aaro7ajanta7#',
+  },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (email === validCredentials.email && password === validCredentials.password) {
+    const isValidUser = validCredentials.some(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (isValidUser) {
       navigate('/onboarding');
     } else {
       setShowToast(true); // Show error toast
@@ -25,14 +38,13 @@ function LoginForm() {
   };
 
   return (
-    <div style={{ backgroundColor: '#E6f1f2', minHeight: '100vh' }}>
-      <Navbar bg="light" className="border-bottom">
-        <Container>
-          <Navbar.Brand className="fw-bold">Aaro7</Navbar.Brand>
-        </Container>
-      </Navbar>
-
-      <Container className="my-5 p-4 rounded shadow-sm" style={{ backgroundColor: '#ffffff', maxWidth: '500px' }}>
+    <div style={{  minHeight: '100vh' }}>
+      <Container className="text-center my-4">
+              <h1 className="fw-bold" style={{ color: '#167C80' }}>
+                Aaro7 
+              </h1>
+            </Container>
+      <Container className="my-5 p-4 rounded shadow-sm" style={{ backgroundColor: '#E6f1f2', maxWidth: '500px' }}>
         <h4 className="fw-semibold text-start mb-4" style={{ color: '#167C80' }}>Sign In</h4>
 
         <Form onSubmit={handleSubmit}>
