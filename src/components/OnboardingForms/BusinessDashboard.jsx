@@ -1,7 +1,7 @@
 import { Container, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
-const BusinessDashboard = ({ formData, onFormDataChange }) => {
+const BusinessDashboard = ({ fileKey, formData, onFormDataChange }) => {
   const [errors, setErrors] = useState({
     certificateOfIncorporation: '',
     moa: ''
@@ -99,7 +99,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>
             Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+          <Form.Control key={fileKey + 'certificateOfIncorporation'} type="file" accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
           />
           {formData.certificateOfIncorporation && (
@@ -117,7 +117,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>
             MoA/AoA: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
           </Form.Label>
-          <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+          <Form.Control key={fileKey + 'moa'} type="file" accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileChange(e, 'moa')}
           />
           {formData.moa && (
