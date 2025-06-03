@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const OnboardingForms = () => {
+  const [formKey, setFormKey] = useState(Date.now());
   const [businessData, setBusinessData] = useState({
     businessName: '',
     entity: '',
@@ -177,6 +178,7 @@ const OnboardingForms = () => {
       });
 
       if (response.ok) {
+        setFormKey(Date.now());
         toast.success('Application submitted successfully!');
 
         setBusinessData({
@@ -241,10 +243,11 @@ const OnboardingForms = () => {
       <ToastContainer position="top-center" autoClose={3000} />
 
       <Form onSubmit={handleSubmit}>
-        <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
-        <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
-        <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
+        <BusinessDashboard fileKey={formKey} formData={businessData} onFormDataChange={handleBusinessChange} />
+        <KycRegistration fileKey={formKey} formData={kycData} onFormDataChange={handleFormDataChange} />
+        <FinancialSnapshotForm fileKey={formKey} files={financialFiles} onFilesChange={handleFinancialFilesChange} />
         <ClientDetailsForm
+          fileKey={formKey}
           clientData={clientData}
           onClientDataChange={handleClientDataChange}
           onAddClient={handleAddClient}
