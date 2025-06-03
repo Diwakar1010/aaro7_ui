@@ -169,7 +169,7 @@ const OnboardingForms = () => {
         })),
       };
 
-      const response = await fetch('http://3.111.52.30/submit', {
+      const response = await fetch('https://aaro7-backend.onrender.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
