@@ -79,7 +79,7 @@ function LoginForm() {
             </Button>
           </div>
 
-          <div className="text-center mb-2">
+          {/* <div className="text-center mb-2">
             <a href="#" className="text-muted" style={{ fontSize: '0.9rem' }}>
               Forgot password?
             </a>
@@ -89,7 +89,7 @@ function LoginForm() {
             <span className="text-muted" style={{ fontSize: '0.9rem' }}>
               Don’t have an account?
             </span>
-          </div>
+          </div> */}
         </Form>
       </Container>
 

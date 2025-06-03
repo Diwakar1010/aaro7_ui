@@ -39,7 +39,7 @@ function FinancialSnapshotForm({fileKey, files, onFilesChange }) {
     { label: 'IT Returns (Last 1 Year)', field: 'itReturns', maxSizeMB: 5 },
     { label: 'Audited Balance Sheet (Last 1 Year)', field: 'auditedBalanceSheet', maxSizeMB: 5 },
     { label: 'Bank Statement (Last 1 Year)', field: 'bankStatement', maxSizeMB: 10 },
-    { label: 'Existing Loan Sanction Letters', field: 'existingSanctionLoanLetters', maxSizeMB: 5 },
+    { label: 'All Existing Loan Sanction Letters', field: 'existingSanctionLoanLetters', maxSizeMB: 5 },
     { label: 'GST Returns (Last 3 Months)', field: 'gstReturns', maxSizeMB: 5 },
     { label: 'ESI Proof (Last 6 Months)', field: 'esiProof', maxSizeMB: 5 },
     { label: 'PF Proof (Last 6 Months)', field: 'pfProof', maxSizeMB: 5 },

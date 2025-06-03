@@ -83,7 +83,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
       <Container className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold m-0" style={{ color: '#167C80' }}>
-            Client Projects for Invoice Discounting
+            Client Projects for Invoice Discounting <span className="text-muted" style={{ fontSize: '0.95rem' }} >(Add Atleast 3 Clients)</span>  
           </h2>
           <p className="m-0 text-muted" style={{ fontSize: '0.95rem' }}>
             (These are the client projects Aaro7 will consider for invoice discounting.)
@@ -268,7 +268,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
                 <Form.Label>
                   Upload Employees Payroll List: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>
                 </Form.Label>
-                <Button variant="link" href="public/employee_details.xlsx" download>
+                <Button variant="link" href="/public/employee_details.xlsx" download>
                   (download format)
                 </Button>
                 <Form.Control
