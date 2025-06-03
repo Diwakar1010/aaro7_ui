@@ -272,9 +272,6 @@ const OnboardingForms = () => {
           <Button style={{ backgroundColor: '#167C80' }} type="submit">
             Submit Application
           </Button> }
-          
-          
-
         </div>
       </Form>
     </>
