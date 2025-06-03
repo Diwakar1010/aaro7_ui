@@ -67,7 +67,6 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
         </Button>
       </Container>
 
-
       {clientData.map((item, index) => (
         <Container className="my-2 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }} key={index}>
           <div className="mb-4">
