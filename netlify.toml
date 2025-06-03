@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/submit"
+  to = "https://3.111.52.30/submit"
+  status = 200
+  force = true
