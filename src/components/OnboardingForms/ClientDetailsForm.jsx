@@ -15,7 +15,29 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
 
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
+
+    // Update the current field
     onClientDataChange(index, name, value);
+
+    const client = { ...clientData[index], [name]: value };
+    const start = new Date(client.startDate);
+    const end = new Date(client.endDate);
+
+    // Validate start date < end date
+    if (client.startDate && client.endDate) {
+      if (start >= end) {
+        setErrors((prev) => ({
+          ...prev,
+          [`date-${index}`]: 'Start date must be before end date.',
+        }));
+      } else {
+        setErrors((prev) => {
+          const updated = { ...prev };
+          delete updated[`date-${index}`];
+          return updated;
+        });
+      }
+    }
   };
 
   const handleFileChange = (e, index) => {
@@ -161,6 +183,9 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                   value={item.startDate}
                   onChange={(e) => handleInputChange(e, index)}
                 />
+                {errors[`date-${index}`] && (
+                  <div className="text-danger mt-1">{errors[`date-${index}`]}</div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -176,6 +201,9 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                   value={item.endDate}
                   onChange={(e) => handleInputChange(e, index)}
                 />
+                {errors[`date-${index}`] && (
+                  <div className="text-danger mt-1">{errors[`date-${index}`]}</div>
+                )}
               </Form.Group>
             </Col>
           </Row>
@@ -185,8 +213,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formInvoiceUpload-${index}`}>
                 <Form.Label>
-                  Upload a recent Invoice:{' '}
-                  <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
+                  Upload a recent Invoice: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
                 </Form.Label>
                 <Form.Control
                   type="file"
@@ -209,8 +236,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formWorkOrderUpload-${index}`}>
                 <Form.Label>
-                  Work Order Upload:{' '}
-                  <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
+                  Work Order Upload: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
                 </Form.Label>
                 <Form.Control
                   type="file"
@@ -233,8 +259,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
             <Col md={12}>
               <Form.Group controlId={`formPayrollListUpload-${index}`}>
                 <Form.Label>
-                  Upload Employees Payroll List:{' '}
-                  <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>
+                  Upload Employees Payroll List: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>
                 </Form.Label>
                 <Button variant="link" href="public/employee_details.xlsx" download>
                   (download format)

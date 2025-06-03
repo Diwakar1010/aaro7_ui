@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import FinancialSnapshotForm from './FinancialSnapshotForm';
 import ClientDetailsForm from './ClientDetailsForm';
-import { Button, Form, Alert, Container } from 'react-bootstrap';
+import { Button, Form, Container } from 'react-bootstrap';
 import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const OnboardingForms = () => {
   const [businessData, setBusinessData] = useState({
@@ -31,7 +33,7 @@ const OnboardingForms = () => {
     gstReturns: [],
     esiProof: [],
     pfProof: [],
-    existingLoanLetters: [],
+    existingSanctionLoanLetters: [],
   });
 
   const [clientData, setClientData] = useState([
@@ -47,9 +49,6 @@ const OnboardingForms = () => {
       payrollListUpload: null,
     }
   ]);
-
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleFormDataChange = (field, value) => {
     setKycData(prev => ({
@@ -97,7 +96,7 @@ const OnboardingForms = () => {
         }
       ]);
     } else {
-      alert("Client cannot be more than 3");
+      toast.error("Client cannot be more than 3");
     }
   };
 
@@ -114,22 +113,17 @@ const OnboardingForms = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessMessage('');
-    setErrorMessage('');
 
     try {
-      // Convert financial files to base64
-      const financialFilesBase64 = {}
-        for (const key in financialFiles) {
-            financialFilesBase64[key] = [];
-            for (const file of financialFiles[key]) {
-                const base64 = await toBase64(file);
-                financialFilesBase64[key].push(base64);
-            }
+      const financialFilesBase64 = {};
+      for (const key in financialFiles) {
+        financialFilesBase64[key] = [];
+        for (const file of financialFiles[key]) {
+          const base64 = await toBase64(file);
+          financialFilesBase64[key].push(base64);
         }
+      }
 
-
-      // Convert client files to base64
       const clientFilesBase64 = [];
       for (const client of clientData) {
         const files = {};
@@ -143,8 +137,6 @@ const OnboardingForms = () => {
         clientFilesBase64.push(files);
       }
 
-
-      // Convert business files to base64
       const businessFilesBase64 = {};
       for (const key of ['certificateOfIncorporation', 'moa']) {
         const file = businessData[key];
@@ -154,7 +146,6 @@ const OnboardingForms = () => {
         }
       }
 
-      // Convert KYC files to base64
       const kycFilesBase64 = {};
       for (const key in kycData) {
         const file = kycData[key];
@@ -184,8 +175,10 @@ const OnboardingForms = () => {
         },
         body: JSON.stringify(payload),
       });
+
       if (response.ok) {
-        setSuccessMessage('Application submitted successfully!');
+        toast.success('Application submitted successfully!');
+
         setBusinessData({
           businessName: '',
           entity: '',
@@ -196,14 +189,14 @@ const OnboardingForms = () => {
           certificateOfIncorporation: null,
           moa: null,
         });
-        setKycData(
-          {
-            psaraLicense: null,
-            panCopy: null,
-            gstCertificate: null,
-            udyamCertificate: null,
-          }
-        )
+
+        setKycData({
+          psaraLicense: null,
+          panCopy: null,
+          gstCertificate: null,
+          udyamCertificate: null,
+        });
+
         setFinancialFiles({
           itReturns: [],
           auditedBalanceSheet: [],
@@ -211,52 +204,55 @@ const OnboardingForms = () => {
           gstReturns: [],
           esiProof: [],
           pfProof: [],
-          existingLoanLetters: [],
+          existingSanctionLoanLetters: [],
         });
 
-        setClientData(
-          [
-            {
-              clientName: '',
-              clientType: '',
-              invoiceSize: '',
-              paymentCycle: '',
-              startDate: '',
-              endDate: '',
-              invoiceUpload: null,
-              workOrderUpload: null,
-              payrollListUpload: null,
-            }
-          ]
-        );
-
+        setClientData([
+          {
+            clientName: '',
+            clientType: '',
+            invoiceSize: '',
+            paymentCycle: '',
+            startDate: '',
+            endDate: '',
+            invoiceUpload: null,
+            workOrderUpload: null,
+            payrollListUpload: null,
+          }
+        ]);
       } else {
         const errorText = await response.text();
-        setErrorMessage(`Submission failed: ${errorText}`);
+        toast.error(`Submission failed: ${errorText}`);
       }
     } catch (error) {
       console.error('Submission error:', error);
-      setErrorMessage('An error occurred during submission. Please try again.');
+      toast.error('An error occurred during submission. Please try again.');
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
-      <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
-      <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-      <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
+    <>
+      <Container className="text-center my-4">
+        <h1 className="fw-bold" style={{ color: '#167C80' }}>
+          Aaro7 Onboarding Form
+        </h1>
+      </Container>
 
-      <div className="mt-2 mb-5 text-center">
-        <Button style={{ backgroundColor: '#167C80' }} type="submit">
-          Submit Application
-        </Button>
-        <Container className="my-4">
-          {successMessage && <Alert variant="success" className="text-center">{successMessage}</Alert>}
-          {errorMessage && <Alert variant="danger" className="text-center">{errorMessage}</Alert>}
-        </Container>
-      </div>
-    </Form>
+      <ToastContainer position="top-center" autoClose={3000} />
+
+      <Form onSubmit={handleSubmit}>
+        <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
+        <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
+        <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
+        <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
+
+        <div className="mt-2 mb-5 text-center">
+          <Button style={{ backgroundColor: '#167C80' }} type="submit">
+            Submit Application
+          </Button>
+        </div>
+      </Form>
+    </>
   );
 };
 
