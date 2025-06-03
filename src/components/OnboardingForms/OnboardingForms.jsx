@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FinancialSnapshotForm from './FinancialSnapshotForm';
 import ClientDetailsForm from './ClientDetailsForm';
-import { Button, Form, Container } from 'react-bootstrap';
+import { Button, Form, Container, Spinner } from 'react-bootstrap';
 import BusinessDashboard from './BusinessDashboard.jsx';
 import KycRegistration from './KycRegistration.jsx';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const OnboardingForms = () => {
   const [formKey, setFormKey] = useState(Date.now());
+  const [loader , setLoader] = useState(false);
   const [businessData, setBusinessData] = useState({
     businessName: '',
     entity: '',
@@ -114,7 +115,7 @@ const OnboardingForms = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     try {
       const financialFilesBase64 = {};
       for (const key in financialFiles) {
@@ -176,8 +177,10 @@ const OnboardingForms = () => {
         },
         body: JSON.stringify(payload),
       });
+      
 
       if (response.ok) {
+        setLoader(false);
         setFormKey(Date.now());
         toast.success('Application submitted successfully!');
 
@@ -223,10 +226,12 @@ const OnboardingForms = () => {
           }
         ]);
       } else {
+        setLoader(false);
         const errorText = await response.text();
         toast.error(`Submission failed: ${errorText}`);
       }
     } catch (error) {
+      setLoader(false);
       console.error('Submission error:', error);
       toast.error('An error occurred during submission. Please try again.');
     }
@@ -254,9 +259,22 @@ const OnboardingForms = () => {
         />
 
         <div className="mt-2 mb-5 text-center">
+          {loader ? <Button style={{ backgroundColor: '#167C80' }} disabled>
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            Loading...
+          </Button> :
           <Button style={{ backgroundColor: '#167C80' }} type="submit">
             Submit Application
-          </Button>
+          </Button> }
+          
+          
+
         </div>
       </Form>
     </>
