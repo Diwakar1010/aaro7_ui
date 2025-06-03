@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Form } from 'react-bootstrap';
 
-const KycRegistration = ({ formData, onFormDataChange }) => {
+const KycRegistration = ({ fileKey,formData, onFormDataChange }) => {
   const [errors, setErrors] = useState({
     psaraLicense: '',
     panCopy: '',
@@ -62,7 +62,7 @@ const KycRegistration = ({ formData, onFormDataChange }) => {
             <Form.Label>
               {label}: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
             </Form.Label>
-            <Form.Control type="file" accept=".pdf,.jpg,.jpeg,.png"
+            <Form.Control type="file" key={fileKey + field} accept=".pdf,.jpg,.jpeg,.png"
                           onChange={(e) => handleFileChange(e, field)}
             />
             {formData[field] && (

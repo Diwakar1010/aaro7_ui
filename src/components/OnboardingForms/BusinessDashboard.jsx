@@ -63,7 +63,7 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
             <option value="proprietorship">Proprietorship</option>
             <option value="partnership">Partnership</option>
             <option value="llp">LLP</option>
-            <option value="pvtltd">Pvt.Ltd</option>
+            <option value="pvtltd">Private Limited</option>
             <option value="other">Other</option>
           </Form.Select>
         </Form.Group>

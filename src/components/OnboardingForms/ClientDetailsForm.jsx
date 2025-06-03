@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
-function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
+function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClient }) {
   const [errors, setErrors] = useState({});
 
   const allowedTypes = {
@@ -28,7 +28,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
       if (start >= end) {
         setErrors((prev) => ({
           ...prev,
-          [`date-${index}`]: 'Start date must be before end date.',
+          [`date-${index}`]: 'Project Start date must be earlier than Work Order.',
         }));
       } else {
         setErrors((prev) => {
@@ -81,15 +81,20 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
   return (
     <>
       <Container className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold m-0" style={{ color: '#167C80' }}>
-          Client Projects for Invoice Discounting
-        </h2>
+        <div>
+          <h2 className="fw-bold m-0" style={{ color: '#167C80' }}>
+            Client Projects for Invoice Discounting
+          </h2>
+          <p className="m-0 text-muted" style={{ fontSize: '0.95rem' }}>
+            (These are the client projects Aaro7 will consider for invoice discounting.)
+          </p>
+        </div>
         <Button style={{ backgroundColor: '#167C80' }} onClick={onAddClient}>
           Add Client
         </Button>
       </Container>
 
-      {clientData.map((item, index) => (
+      {clientData?.map((item, index) => (
         <Container className="my-2 p-4 rounded" style={{ backgroundColor: '#E6f1f2' }} key={index}>
           <div className="mb-4">
             <h4 className="fw-semibold text-muted" style={{ fontSize: '1.1rem' }}>
@@ -126,8 +131,8 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 >
                   <option value="">Select</option>
                   <option value="centralgovernment">Central Government</option>
-                  <option value="telanganastategovernment">State Government</option>
-                  <option value="privatecompany">(AAA) Private Company</option>
+                  <option value="stategovernment">State Government</option>
+                  <option value="privatecompany">Private Company(AAA)</option>
                   <option value="other">Other</option>
                 </Form.Control>
               </Form.Group>
@@ -217,6 +222,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 </Form.Label>
                 <Form.Control
                   type="file"
+                  key={`${fileKey}-invoiceUpload-${index}`}
                   name="invoiceUpload"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(e) => handleFileChange(e, index)}
@@ -240,6 +246,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 </Form.Label>
                 <Form.Control
                   type="file"
+                  key={`${fileKey}-workOrderUpload-${index}`}
                   name="workOrderUpload"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={(e) => handleFileChange(e, index)}
@@ -266,6 +273,7 @@ function ClientDetailsForm({ clientData, onClientDataChange, onAddClient }) {
                 </Button>
                 <Form.Control
                   type="file"
+                  key={`${fileKey}-payrollListUpload-${index}`}
                   name="payrollListUpload"
                   accept=".xls,.xlsx"
                   onChange={(e) => handleFileChange(e, index)}

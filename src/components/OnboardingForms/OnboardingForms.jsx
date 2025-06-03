@@ -244,7 +244,11 @@ const OnboardingForms = () => {
         <BusinessDashboard formData={businessData} onFormDataChange={handleBusinessChange} />
         <KycRegistration formData={kycData} onFormDataChange={handleFormDataChange} />
         <FinancialSnapshotForm files={financialFiles} onFilesChange={handleFinancialFilesChange} />
-        <ClientDetailsForm clientData={clientData} onClientDataChange={handleClientDataChange} onAddClient={handleAddClient}/>
+        <ClientDetailsForm
+          clientData={clientData}
+          onClientDataChange={handleClientDataChange}
+          onAddClient={handleAddClient}
+        />
 
         <div className="mt-2 mb-5 text-center">
           <Button style={{ backgroundColor: '#167C80' }} type="submit">

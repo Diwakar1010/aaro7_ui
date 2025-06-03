@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 
-function FinancialSnapshotForm({ files, onFilesChange }) {
+function FinancialSnapshotForm({fileKey, files, onFilesChange }) {
   const [errors, setErrors] = useState({
     itReturns: '',
     auditedBalanceSheet: '',
@@ -57,7 +57,7 @@ function FinancialSnapshotForm({ files, onFilesChange }) {
               <Form.Label>
                 {label}: <small className="text-muted">(PDF/JPG/PNG, Max {maxSizeMB}MB)</small>
               </Form.Label>
-              <Form.Control type="file" multiple accept=".pdf,.jpg,.jpeg,.png"
+              <Form.Control type="file" key={`${fileKey}-${field}`} multiple accept=".pdf,.jpg,.jpeg,.png"
                             onChange={(e) => handleFileChange(e, field, maxSizeMB)}
               />
               {files[field] && files[field].length > 0 && (
