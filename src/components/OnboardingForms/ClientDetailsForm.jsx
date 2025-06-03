@@ -268,7 +268,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
                 <Form.Label>
                   Upload Employees Payroll List: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>
                 </Form.Label>
-                <Button variant="link" href="/public/employee_details.xlsx" download>
+                <Button variant="link" href="/employee_details.xlsx" download>
                   (download format)
                 </Button>
                 <Form.Control
