@@ -60,11 +60,11 @@ const BusinessDashboard = ({ formData, onFormDataChange }) => {
           <Form.Label>Type of Entity:</Form.Label>
           <Form.Select value={formData.entity} onChange={(e) => onFormDataChange('entity', e.target.value)}>
             <option value="">Select</option>
-            <option value="proprietorship">Proprietorship</option>
-            <option value="partnership">Partnership</option>
-            <option value="llp">LLP</option>
-            <option value="pvtltd">Private Limited</option>
-            <option value="other">Other</option>
+            <option value="Proprietorship">Proprietorship</option>
+            <option value="Partnership">Partnership</option>
+            <option value="LLP">LLP</option>
+            <option value="Pvt.Ltd">Pvt.Ltd</option>
+            <option value="Other">Other</option>
           </Form.Select>
         </Form.Group>
 

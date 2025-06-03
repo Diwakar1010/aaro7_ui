@@ -130,10 +130,10 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
                   onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
-                  <option value="centralgovernment">Central Government</option>
-                  <option value="stategovernment">State Government</option>
-                  <option value="privatecompany">Private Company(AAA)</option>
-                  <option value="other">Other</option>
+                  <option value="Central Government">Central Government</option>
+                  <option value="State Government">State Government</option>
+                  <option value="Private Company(AAA)">Private Company(AAA)</option>
+                  <option value="Other">Other</option>
                 </Form.Control>
               </Form.Group>
             </Col>
