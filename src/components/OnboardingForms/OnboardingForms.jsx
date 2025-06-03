@@ -168,7 +168,7 @@ const OnboardingForms = () => {
         })),
       };
 
-      const response = await fetch('/submit', {
+      const response = await fetch('https://aaro7-backend.onrender.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
