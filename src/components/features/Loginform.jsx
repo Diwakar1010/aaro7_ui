@@ -31,6 +31,7 @@ function LoginForm() {
     );
 
     if (isValidUser) {
+      sessionStorage.setItem('isLoggedIn', 'true');
       navigate('/onboarding');
     } else {
       setShowToast(true); // Show error toast
