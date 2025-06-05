@@ -43,7 +43,7 @@ function LoginForm() {
               <h1 className="fw-bold" style={{ color: '#167C80' }}>
                 Aaro7 
               </h1>
-            </Container>
+      </Container>
       <Container className="my-5 p-4 rounded shadow-sm" style={{ backgroundColor: '#E6f1f2', maxWidth: '500px' }}>
         <h4 className="fw-semibold text-start mb-4" style={{ color: '#167C80' }}>Sign In</h4>
 
