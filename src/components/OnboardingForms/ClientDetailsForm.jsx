@@ -120,12 +120,8 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             <Col md={12}>
               <Form.Group controlId={`formClientName-${index}`}>
                 <Form.Label>Client Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="clientName"
-                  value={item.clientName}
-                  onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Enter client name"
+                <Form.Control type="text" name="clientName" value={item.clientName}
+                              onChange={(e) => handleInputChange(e, index)} placeholder="Enter client name"
                 />
               </Form.Group>
             </Col>
@@ -136,11 +132,8 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             <Col md={12}>
               <Form.Group controlId={`formClientType-${index}`}>
                 <Form.Label>Client Type:</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="clientType"
-                  value={item.clientType}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control as="select" name="clientType" value={item.clientType}
+                              onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
                   <option value="Central Government">Central Government</option>
@@ -157,12 +150,8 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             <Col md={12}>
               <Form.Group controlId={`formInvoiceSize-${index}`}>
                 <Form.Label>Last Invoice Amount (INR):</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="invoiceSize"
-                  value={item.invoiceSize}
-                  onChange={(e) => handleInputChange(e, index)}
-                  placeholder="Enter invoice size"
+                <Form.Control type="number" name="invoiceSize" value={item.invoiceSize}
+                              onChange={(e) => handleInputChange(e, index)} placeholder="Enter invoice size"
                 />
               </Form.Group>
             </Col>
@@ -173,11 +162,8 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             <Col md={12}>
               <Form.Group controlId={`formPaymentCycle-${index}`}>
                 <Form.Label>Payment Cycle: (Days)</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="paymentCycle"
-                  value={item.paymentCycle}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control as="select" name="paymentCycle" value={item.paymentCycle}
+                              onChange={(e) => handleInputChange(e, index)}
                 >
                   <option value="">Select</option>
                   <option value="15">15 days</option>
@@ -195,11 +181,8 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             <Col md={12}>
               <Form.Group controlId={`formStartDate-${index}`}>
                 <Form.Label>Project Start Date:</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="startDate"
-                  value={item.startDate}
-                  onChange={(e) => handleInputChange(e, index)}
+                <Form.Control type="date" name="startDate" value={item.startDate}
+                              onChange={(e) => handleInputChange(e, index)}
                 />
                 {errors[`date-${index}`] && (
                   <div className="text-danger mt-1">{errors[`date-${index}`]}</div>
@@ -233,12 +216,8 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
                 <Form.Label>
                   Upload a recent Invoice: <small className="text-muted">(PDF/JPG/PNG upto 5MB/ ZIP upto 50MB)</small>
                 </Form.Label>
-                <Form.Control
-                  type="file"
-                  key={`${fileKey}-invoiceUpload-${index}`}
-                  name="invoiceUpload"
-                  accept=".pdf,.jpg,.jpeg,.png,.zip"
-                  onChange={(e) => handleFileChange(e, index)}
+                <Form.Control type="file" key={`${fileKey}-invoiceUpload-${index}`} name="invoiceUpload" accept=".pdf,.jpg,.jpeg,.png,.zip"
+                              onChange={(e) => handleFileChange(e, index)}
                 />
                 {item.invoiceUpload && (
                   <Form.Text muted>{item.invoiceUpload.name} Uploaded file</Form.Text>
