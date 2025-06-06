@@ -255,7 +255,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             <Col md={12}>
               <Form.Group controlId={`formWorkOrderUpload-${index}`}>
                 <Form.Label>
-                  Work Order Upload: <small className="text-muted">(PDF/JPG/PNG upto max 5MB/ ZIP upto max 50MB)</small>
+                  Work Order Upload: <small className="text-muted">(PDF/JPG/PNG upto max 5MB/ ZIP upto 50MB)</small>
                 </Form.Label>
                 <Form.Control type="file" key={`${fileKey}-workOrderUpload-${index}`} name="workOrderUpload" accept=".pdf,.jpg,.jpeg,.png,.zip"
                               onChange={(e) => handleFileChange(e, index)}
