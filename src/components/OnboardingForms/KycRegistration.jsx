@@ -3,10 +3,10 @@ import { Container, Form } from 'react-bootstrap';
 
 const KycRegistration = ({ fileKey,formData, onFormDataChange }) => {
   const [errors, setErrors] = useState({
-    psaraLicense: '',
-    panCopy: '',
-    gstCertificate: '',
-    udyamCertificate: '',
+    psara_license: '',
+    pan_copy: '',
+    gst_certificate: '',
+    udyam_certificate: '',
   });
 
   const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
@@ -53,10 +53,10 @@ const KycRegistration = ({ fileKey,formData, onFormDataChange }) => {
 
       <Form>
         {[
-          { label: 'PSARA License', field: 'psaraLicense' },
-          { label: 'PAN Copy', field: 'panCopy' },
-          { label: 'GST Certificate', field: 'gstCertificate' },
-          { label: 'Udyam Certificate', field: 'udyamCertificate' }
+          { label: 'PSARA License', field: 'psara_license' },
+          { label: 'PAN Copy', field: 'pan_copy' },
+          { label: 'GST Certificate', field: 'gst_certificate' },
+          { label: 'Udyam Certificate', field: 'udyam_certificate' }
         ].map(({ label, field }) => (
           <Form.Group key={field} className="mb-3 text-start" controlId={field}>
             <Form.Label>

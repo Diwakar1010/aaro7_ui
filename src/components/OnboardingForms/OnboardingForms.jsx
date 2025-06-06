@@ -17,25 +17,25 @@ const OnboardingForms = () => {
     businessAge: '',
     registeredOffice: '',
     headOffice: '',
-    certificateOfIncorporation: null,
+    certificate_of_incorporation: null,
     moa: null,
   });
 
   const [kycData, setKycData] = useState({
-    psaraLicense: null,
-    panCopy: null,
-    gstCertificate: null,
-    udyamCertificate: null,
+    psara_license: null,
+    pan_copy: null,
+    gst_certificate: null,
+    udyam_certificate: null,
   });
 
   const [financialFiles, setFinancialFiles] = useState({
-    itReturns: [],
-    auditedBalanceSheet: [],
-    bankStatement: [],
-    gstReturns: [],
-    esiProof: [],
-    pfProof: [],
-    existingSanctionLoanLetters: [],
+    it_returns: [],
+    audited_balance_sheet: [],
+    bank_statement: [],
+    gst_returns: [],
+    esi_proof: [],
+    pf_proof: [],
+    all_existing_sanction_loan_letters: [],
   });
 
   const [clientData, setClientData] = useState([
@@ -140,7 +140,7 @@ const OnboardingForms = () => {
       }
 
       const businessFilesBase64 = {};
-      for (const key of ['certificateOfIncorporation', 'moa']) {
+      for (const key of ['certificate_of_incorporation', 'moa']) {
         const file = businessData[key];
         if (file) {
           const base64 = await toBase64(file);
@@ -191,25 +191,25 @@ const OnboardingForms = () => {
           businessAge: '',
           registeredOffice: '',
           headOffice: '',
-          certificateOfIncorporation: null,
+          certificate_of_incorporation: null,
           moa: null,
         });
 
         setKycData({
-          psaraLicense: null,
-          panCopy: null,
-          gstCertificate: null,
-          udyamCertificate: null,
+          psara_license: null,
+          pan_copy: null,
+          gst_certificate: null,
+          udyam_certificate: null,
         });
 
         setFinancialFiles({
-          itReturns: [],
-          auditedBalanceSheet: [],
-          bankStatement: [],
-          gstReturns: [],
-          esiProof: [],
-          pfProof: [],
-          existingSanctionLoanLetters: [],
+          it_returns: [],
+          audited_balance_sheet: [],
+          bank_statement: [],
+          gst_returns: [],
+          esi_proof: [],
+          pf_proof: [],
+          all_existing_sanction_loan_letters: [],
         });
 
         setClientData([

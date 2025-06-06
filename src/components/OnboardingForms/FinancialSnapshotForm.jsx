@@ -3,13 +3,13 @@ import { Form, Container, Row, Col } from 'react-bootstrap';
 
 function FinancialSnapshotForm({ fileKey, files, onFilesChange }) {
   const [errors, setErrors] = useState({
-    itReturns: '',
-    auditedBalanceSheet: '',
-    bankStatement: '',
-    gstReturns: '',
-    esiProof: '',
-    pfProof: '',
-    existingLoanLetters: '',
+    it_returns: '',
+    audited_balance_sheet: '',
+    bank_statement: '',
+    gst_returns: '',
+    esi_proof: '',
+    pf_proof: '',
+    all_existing_sanction_loan_letters: '',
   });
 
   const allowedTypes = [
@@ -43,13 +43,13 @@ function FinancialSnapshotForm({ fileKey, files, onFilesChange }) {
   };
 
   const fields = [
-    { label: 'IT Returns (Last 1 Year)', field: 'itReturns', maxSizeMB: 5 },
-    { label: 'Audited Balance Sheet (Last 1 Year)', field: 'auditedBalanceSheet', maxSizeMB: 5 },
-    { label: 'Bank Statement (Last 1 Year)', field: 'bankStatement', maxSizeMB: 10 },
-    { label: 'Existing Loan Sanction Letters', field: 'existingSanctionLoanLetters', maxSizeMB: 5 },
-    { label: 'GST Returns (Last 3 Months)', field: 'gstReturns', maxSizeMB: 5 },
-    { label: 'ESI Proof (Last 6 Months)', field: 'esiProof', maxSizeMB: 5 },
-    { label: 'PF Proof (Last 6 Months)', field: 'pfProof', maxSizeMB: 5 },
+    { label: 'IT Returns (Last 1 Year)', field: 'it_returns', maxSizeMB: 5 },
+    { label: 'Audited Balance Sheet (Last 1 Year)', field: 'audited_balance_sheet', maxSizeMB: 5 },
+    { label: 'Bank Statement (Last 1 Year)', field: 'bank_statement', maxSizeMB: 10 },
+    { label: 'All Existing Loan Sanction Letters', field: 'all_existing_sanction_loan_letters', maxSizeMB: 5 },
+    { label: 'GST Returns (Last 3 Months)', field: 'gst_returns', maxSizeMB: 5 },
+    { label: 'ESI Proof (Last 6 Months)', field: 'esi_proof', maxSizeMB: 5 },
+    { label: 'PF Proof (Last 6 Months)', field: 'pf_proof', maxSizeMB: 5 },
   ];
 
   return (

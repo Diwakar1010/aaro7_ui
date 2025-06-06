@@ -100,11 +100,11 @@ const BusinessDashboard = ({ fileKey, formData, onFormDataChange }) => {
             Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG upto 5MB)</small>
           </Form.Label>
           <Form.Control key={fileKey + 'certificateOfIncorporation'} type="file" accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
+                        onChange={(e) => handleFileChange(e, 'certificate_of_incorporation')}
           />
-          {formData.certificateOfIncorporation && (
+          {formData.certificate_of_incorporation && (
             <Form.Text muted>
-              {formData.certificateOfIncorporation.name} File Uploaded
+              {formData.certificate_of_incorporation.name} File Uploaded
             </Form.Text>
           )}
           {errors.certificateOfIncorporation && (
