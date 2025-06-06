@@ -6,25 +6,28 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
 
   const allowedTypes = {
     invoiceUpload: [
-      'application/pdf', 'image/jpeg', 'image/png', 'application/zip', 'application/x-zip-compressed',
+        'application/pdf', 'image/jpeg', 'image/png', 'application/zip', 'application/x-zip-compressed',
     ],
     workOrderUpload: [
         'application/pdf', 'image/jpeg', 'image/png', 'application/zip', 'application/x-zip-compressed',
     ],
     payrollListUpload: [
-      'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip', 'application/x-zip-compressed',
+      'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ],
   };
+
 
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
 
+    // Update the current field
     onClientDataChange(index, name, value);
 
     const client = { ...clientData[index], [name]: value };
     const start = new Date(client.startDate);
     const end = new Date(client.endDate);
 
+    // Validate start date < end date
     if (client.startDate && client.endDate) {
       if (start >= end) {
         setErrors((prev) => ({
@@ -50,31 +53,34 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
     const isZip =
       file.type === 'application/zip' || file.type === 'application/x-zip-compressed';
 
-    const maxSizeMB = isZip ? 40 : 5;
+    // Check if ZIP is allowed for this field
+    const isZipAllowed = allowedTypes[fieldName]?.includes('application/zip');
 
-    if (file.size > maxSizeMB * 1024 * 1024) {
+    // Determine size limit
+    const maxSize = isZip && isZipAllowed ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
+
+    if (file.size > maxSize) {
       setErrors((prev) => ({
         ...prev,
-        [`${fieldName}-${index}`]: `File size must not exceed ${maxSizeMB}MB.`,
+        [`${fieldName}-${index}`]: `File size must not exceed ${isZip && isZipAllowed ? '50MB' : '5MB'}.`,
       }));
       onClientDataChange(index, fieldName, null);
       e.target.value = '';
       return;
     }
 
-    if (allowedTypes[fieldName] && !allowedTypes[fieldName].includes(file.type)) {
+    if (!allowedTypes[fieldName]?.includes(file.type)) {
       let errorMsg = 'Invalid file type.';
       if (fieldName === 'payrollListUpload') {
-        errorMsg = 'Invalid file type. Please upload .xls, .xlsx, or ZIP files.';
-      } else if (fieldName === 'invoiceUpload' || fieldName === 'workOrderUpload') {
-        errorMsg = 'Invalid file type. Please upload PDF, JPG, PNG, or ZIP files.';
+        errorMsg = 'Please upload only .xls or .xlsx Excel files.';
+      } else {
+        errorMsg = 'Please upload PDF, JPG, PNG, or ZIP files.';
       }
 
       setErrors((prev) => ({
         ...prev,
         [`${fieldName}-${index}`]: errorMsg,
       }));
-
       onClientDataChange(index, fieldName, null);
       e.target.value = '';
       return;
@@ -84,15 +90,13 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
     onClientDataChange(index, fieldName, file);
   };
 
+
   return (
     <>
       <Container className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold m-0" style={{ color: '#167C80' }}>
-            Client Projects for Invoice Discounting{' '}
-            <span className="text-muted" style={{ fontSize: '0.95rem' }}>
-              (add at least 3 clients)
-            </span>
+            Client Projects for Invoice Discounting
           </h2>
           <p className="m-0 text-muted" style={{ fontSize: '0.95rem' }}>
             (These are the client projects Aaro7 will consider for invoice discounting.)
@@ -111,6 +115,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </h4>
           </div>
 
+          {/* Client Name */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formClientName-${index}`}>
@@ -126,6 +131,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Client Type */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formClientType-${index}`}>
@@ -146,6 +152,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Invoice Size */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formInvoiceSize-${index}`}>
@@ -161,6 +168,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Payment Cycle */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formPaymentCycle-${index}`}>
@@ -182,6 +190,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Start Date */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formStartDate-${index}`}>
@@ -199,6 +208,7 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* End Date */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formEndDate-${index}`}>
@@ -216,12 +226,12 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Invoice Upload */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formInvoiceUpload-${index}`}>
                 <Form.Label>
-                  Upload a recent Invoice:{' '}
-                  <small className="text-muted">(PDF/JPG/PNG, Max 5MB / ZIP)</small>
+                  Upload a recent Invoice: <small className="text-muted">(PDF/JPG/PNG upto 5MB/ ZIP upto 50MB)</small>
                 </Form.Label>
                 <Form.Control
                   type="file"
@@ -240,19 +250,15 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Work Order Upload */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formWorkOrderUpload-${index}`}>
                 <Form.Label>
-                  Work Order Upload:{' '}
-                  <small className="text-muted">(PDF/JPG/PNG, Max 5MB / ZIP)</small>
+                  Work Order Upload: <small className="text-muted">(PDF/JPG/PNG upto max 5MB/ ZIP upto max 50MB)</small>
                 </Form.Label>
-                <Form.Control
-                  type="file"
-                  key={`${fileKey}-workOrderUpload-${index}`}
-                  name="workOrderUpload"
-                  accept=".pdf,.jpg,.jpeg,.png,.zip"
-                  onChange={(e) => handleFileChange(e, index)}
+                <Form.Control type="file" key={`${fileKey}-workOrderUpload-${index}`} name="workOrderUpload" accept=".pdf,.jpg,.jpeg,.png,.zip"
+                              onChange={(e) => handleFileChange(e, index)}
                 />
                 {item.workOrderUpload && (
                   <Form.Text muted>{item.workOrderUpload.name} Uploaded file</Form.Text>
@@ -264,22 +270,18 @@ function ClientDetailsForm({ fileKey, clientData, onClientDataChange, onAddClien
             </Col>
           </Row>
 
+          {/* Payroll List Upload */}
           <Row className="mb-3">
             <Col md={12}>
               <Form.Group controlId={`formPayrollListUpload-${index}`}>
                 <Form.Label>
-                  Upload Employees Payroll List:{' '}
-                  <small className="text-muted">(.xls/.xlsx, Max 5MB / ZIP)</small>
+                  Upload Employees Payroll List: <small className="text-muted">(.xls, .xlsx, Max 5MB)</small>
                 </Form.Label>
-                <Button variant="link" href="/employee_details.xlsx" download>
+                <Button variant="link" href="public/employee_details.xlsx" download>
                   (download format)
                 </Button>
-                <Form.Control
-                  type="file"
-                  key={`${fileKey}-payrollListUpload-${index}`}
-                  name="payrollListUpload"
-                  accept=".xls,.xlsx,.zip"
-                  onChange={(e) => handleFileChange(e, index)}
+                <Form.Control type="file" key={`${fileKey}-payrollListUpload-${index}`} name="payrollListUpload" accept=".xls,.xlsx"
+                              onChange={(e) => handleFileChange(e, index)}
                 />
                 {item.payrollListUpload && (
                   <Form.Text muted>{item.payrollListUpload.name} Uploaded file</Form.Text>

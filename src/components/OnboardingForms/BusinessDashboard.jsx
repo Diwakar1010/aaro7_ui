@@ -97,7 +97,7 @@ const BusinessDashboard = ({ fileKey, formData, onFormDataChange }) => {
         {/* Certificate of Incorporation */}
         <Form.Group className="mb-3 text-start" controlId="incorporation">
           <Form.Label>
-            Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
+            Certificate of Incorporation: <small className="text-muted">(PDF/JPG/PNG upto 5MB)</small>
           </Form.Label>
           <Form.Control key={fileKey + 'certificateOfIncorporation'} type="file" accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileChange(e, 'certificateOfIncorporation')}
@@ -115,7 +115,7 @@ const BusinessDashboard = ({ fileKey, formData, onFormDataChange }) => {
         {/* MoA */}
         <Form.Group className="mb-4 text-start" controlId="moa">
           <Form.Label>
-            MoA/AoA: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
+            MoA/AoA: <small className="text-muted">(PDF/JPG/PNG upto 5MB)</small>
           </Form.Label>
           <Form.Control key={fileKey + 'moa'} type="file" accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileChange(e, 'moa')}

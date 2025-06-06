@@ -60,7 +60,7 @@ const KycRegistration = ({ fileKey,formData, onFormDataChange }) => {
         ].map(({ label, field }) => (
           <Form.Group key={field} className="mb-3 text-start" controlId={field}>
             <Form.Label>
-              {label}: <small className="text-muted">(PDF/JPG/PNG, Max 5MB)</small>
+              {label}: <small className="text-muted">(PDF/JPG/PNG upto 5MB)</small>
             </Form.Label>
             <Form.Control type="file" key={fileKey + field} accept=".pdf,.jpg,.jpeg,.png"
                           onChange={(e) => handleFileChange(e, field)}
