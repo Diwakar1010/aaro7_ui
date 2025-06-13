@@ -21,6 +21,10 @@ function LoginForm() {
     email: 'cvrbenarjee@gmail.com',
     password: 'aaro7ajanta7#',
   },
+  {
+    email: 'mahesh@v1fs.in',
+    password: 'aaro7v1fs7#',
+  }
   ];
 
   const handleSubmit = (e) => {
